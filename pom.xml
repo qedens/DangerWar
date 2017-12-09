@@ -57,11 +57,11 @@
             <scope>provided</scope>
         </dependency>
         <!--ProtocolLib-->
-        <!--<dependency>-->
-            <!--<groupId>com.comphenix.protocol</groupId>-->
-            <!--<artifactId>ProtocolLib</artifactId>-->
-            <!--<version>4.3.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.3.0</version>
+        </dependency>
         <!--commons-lang3-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -102,8 +102,8 @@
                                 <excludes>
                                     <exclude>cglib</exclude>
                                     <exclude>org.spigotmc</exclude>
-                                    <!--<exclude>com.comphenix.protocol</exclude>-->
-                                    <!--<exclude>com.comphenix.executors</exclude>-->
+                                    <exclude>com.comphenix.protocol</exclude>
+                                    <exclude>com.comphenix.executors</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

@@ -12,10 +12,14 @@ import java.util.Date;
  * @author Zoyn
  * @since 2017-12-09
  */
-public class TimeUtils {
+public final class TimeUtils {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     private static final String CHINESE_DATE_FORMAT = "yyyy年MM月dd日";
+
+    // 防止意外操作
+    private TimeUtils() {
+    }
 
     /**
      * 判断今日是否为休假日
