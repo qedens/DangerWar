@@ -28,6 +28,7 @@ public class Wand implements ConfigurationSerializable {
         map.put("name", this.name);
         map.put("damage", this.damage);
         map.put("level", this.level);
+        map.put("addition", addition);
 
         return map;
     }

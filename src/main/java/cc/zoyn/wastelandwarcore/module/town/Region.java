@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -31,6 +32,32 @@ public class Region implements ConfigurationSerializable {
     private List<String> allowedPlayers;
     private Location teleportPoint;
 
+    /**
+     * 判断坐标是否含于该区域
+     *
+     * @param location 坐标
+     */
+    public boolean isInRegion(final Location location) {
+        if (location == null) {
+            return false;
+        } else if (!Bukkit.getWorld(worldName).equals(location.getWorld())) {
+            return false;
+        } else if (border1.getX() > location.getX()) {
+            return false;
+        } else if (border1.getY() > location.getY()) {
+            return false;
+        } else if (border1.getZ() > location.getZ()) {
+            return false;
+        } else if (border2.getX() < location.getX()) {
+            return false;
+        } else if (border2.getY() < location.getY()) {
+            return false;
+        } else if (border2.getZ() < location.getZ()) {
+            return false;
+        }
+        return true;
+    }
+
     public static Region deserialize(Map<String, Object> map) {
         Validate.notNull(map);
 
@@ -38,6 +65,11 @@ public class Region implements ConfigurationSerializable {
         region.setName((String) map.getOrDefault("name", "null"));
         region.setOwner((String) map.getOrDefault("owner", "null"));
         region.setWorldName((String) map.get("worldname"));
+        region.setBorder1((Location) map.get("border1"));
+        region.setBorder2((Location) map.get("border2"));
+        region.setCreateTime((long) map.get("createtime"));
+        region.setAllowedPlayers((List) map.get("allowedplayers"));
+        region.setTeleportPoint((Location) map.get("teleportpoint"));
 
         return region;
     }

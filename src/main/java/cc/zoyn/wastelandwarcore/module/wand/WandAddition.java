@@ -16,6 +16,6 @@ public class WandAddition implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-        return null;
+        return map;
     }
 }
