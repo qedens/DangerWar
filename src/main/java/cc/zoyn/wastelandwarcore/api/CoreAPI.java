@@ -6,6 +6,8 @@ import cc.zoyn.wastelandwarcore.util.TitleUtils;
 import org.bukkit.entity.Player;
 
 /**
+ * 核心API
+ *
  * @author Zoyn
  * @since 2017-12-09
  */

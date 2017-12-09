@@ -7,6 +7,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
+ * 当城镇被删除时触发此事件
+ *
  * @author Zoyn
  * @since 2017-12-09
  */

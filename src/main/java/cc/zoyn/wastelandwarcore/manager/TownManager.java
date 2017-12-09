@@ -7,6 +7,8 @@ import org.apache.commons.lang3.Validate;
 import java.util.List;
 
 /**
+ * 城镇管理器
+ *
  * @author Zoyn
  * @since 2017-12-09
  */
