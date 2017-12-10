@@ -1,4 +1,4 @@
-package cc.zoyn.wastelandwarcore.module.wand;
+package cc.zoyn.wastelandwarcore.module.item;
 
 import com.google.common.collect.Maps;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;

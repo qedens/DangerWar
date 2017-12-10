@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
  */
 public class CoreAPI {
 
-    public static TownManager getTowManager() {
+    public static TownManager getTownManager() {
         return TownManager.getInstance();
     }
 
