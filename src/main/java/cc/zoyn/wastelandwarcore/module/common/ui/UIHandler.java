@@ -8,7 +8,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  * @author Zoyn
  * @since 2017-12-09
  */
-public interface UIListener extends Listener {
+@FunctionalInterface
+public interface UIHandler extends Listener {
 
     @EventHandler
     void execute(InventoryClickEvent e);

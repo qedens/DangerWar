@@ -15,6 +15,6 @@ import org.bukkit.inventory.Inventory;
 public class UI {
 
     private Inventory inventory;
-    private UIListener listener;
+    private UIHandler listener;
 
 }
