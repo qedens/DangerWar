@@ -4,14 +4,14 @@ import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
- * 法杖
+ * 特殊属性
  *
  * @author Zoyn
  * @since 2017-12-09
@@ -19,27 +19,16 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Wand implements UniversalItem, ConfigurationSerializable {
+public class SpecialAttribute implements ConfigurationSerializable {
 
-    private Material material;
-    private int subId;
-    private int amount;
-    private ItemMeta itemMeta;
-
-    private double damage;
-    private int level;
-    private AttributeType attribute;
+    private String name;
+    private String description;
+    private BiFunction<Player, Arguments, Boolean> executor;
 
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("name", itemMeta.getDisplayName());
-        map.put("damage", this.damage);
-        map.put("level", this.level);
-
+        map.put("name", description);
         return map;
     }
-
 }
-
-

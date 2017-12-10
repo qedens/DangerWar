@@ -5,41 +5,33 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 
 /**
- * 法杖
+ * 表示靴子
  *
  * @author Zoyn
- * @since 2017-12-09
+ * @since 2017-12-10
  */
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Wand implements UniversalItem, ConfigurationSerializable {
+public class Shoes implements UniversalItem {
 
     private Material material;
     private int subId;
     private int amount;
     private ItemMeta itemMeta;
 
-    private double damage;
-    private int level;
-    private AttributeType attribute;
+    private double defense;
+    private double movementSpeed;
+    private double resistance;
 
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("name", itemMeta.getDisplayName());
-        map.put("damage", this.damage);
-        map.put("level", this.level);
-
         return map;
     }
-
 }
-
-

@@ -1,10 +1,6 @@
 package cc.zoyn.wastelandwarcore.manager;
 
 import cc.zoyn.wastelandwarcore.module.town.Town;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.Validate;
-
-import java.util.List;
 
 /**
  * 城镇管理器
@@ -12,10 +8,9 @@ import java.util.List;
  * @author Zoyn
  * @since 2017-12-09
  */
-public class TownManager {
+public class TownManager extends AbstractManager<Town> {
 
     private static volatile TownManager instance;
-    private List<Town> towns = Lists.newArrayList();
 
     // 防止意外实例化
     private TownManager() {
@@ -37,14 +32,6 @@ public class TownManager {
         return instance;
     }
 
-    public void addTown(Town town) {
-        towns.add(Validate.notNull(town));
-    }
-
-    public void removeTown(Town town) {
-        towns.remove(town);
-    }
-
     /**
      * 利用名字获取城镇对象
      * <p>利用城镇名获取城镇对象,当获取不到时返回 null 值<p/>
@@ -53,7 +40,7 @@ public class TownManager {
      * @return {@link Town}
      */
     public Town getTown(String townName) {
-        for (Town town : towns) {
+        for (Town town : getList()) {
             if (town.getName().equals(townName)) {
                 return town;
             }

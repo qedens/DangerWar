@@ -1,5 +1,6 @@
 package cc.zoyn.wastelandwarcore.api;
 
+import cc.zoyn.wastelandwarcore.manager.ItemManager;
 import cc.zoyn.wastelandwarcore.manager.TownManager;
 import cc.zoyn.wastelandwarcore.util.ActionBarUtils;
 import cc.zoyn.wastelandwarcore.util.TitleUtils;
@@ -12,6 +13,10 @@ import org.bukkit.entity.Player;
  * @since 2017-12-09
  */
 public class CoreAPI {
+
+    public static ItemManager getItemManager() {
+        return ItemManager.getInstance();
+    }
 
     public static TownManager getTownManager() {
         return TownManager.getInstance();
