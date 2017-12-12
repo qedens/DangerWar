@@ -58,7 +58,8 @@ public class Region implements ConfigurationSerializable {
         return true;
     }
 
-    public static Region deserialize(Map<String, Object> map) {
+    @SuppressWarnings("unchecked")
+	public static Region deserialize(Map<String, Object> map) {
         Validate.notNull(map);
 
         Region region = new Region();
@@ -68,7 +69,7 @@ public class Region implements ConfigurationSerializable {
         region.setBorder1((Location) map.get("border1"));
         region.setBorder2((Location) map.get("border2"));
         region.setCreateTime((long) map.get("createtime"));
-        region.setAllowedPlayers((List) map.get("allowedplayers"));
+        region.setAllowedPlayers((List<String>) map.get("allowedplayers"));
         region.setTeleportPoint((Location) map.get("teleportpoint"));
 
         return region;
