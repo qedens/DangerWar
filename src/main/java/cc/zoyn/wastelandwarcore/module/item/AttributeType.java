@@ -12,7 +12,6 @@ import org.bukkit.entity.Snowball;
  */
 @Getter
 public enum AttributeType {
-
     FIREBALL(new SpecialAttribute("火球", "发射一个火球",
             (player, arguments) -> {
                 Fireball fireball = player.launchProjectile(Fireball.class);
@@ -25,7 +24,6 @@ public enum AttributeType {
                 snowball.setVelocity(player.getLocation().getDirection().multiply(5));
                 return true;
             }));
-
     private SpecialAttribute specialAttribute;
 
     AttributeType(SpecialAttribute specialAttribute) {

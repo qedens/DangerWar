@@ -1,13 +1,15 @@
 package cc.zoyn.wastelandwarcore.module.item;
 
-import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 表示靴子
@@ -18,7 +20,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Shoes implements UniversalItem {
+public class Shoes implements UniversalItem,Armor {
 
     private Material material;
     private int subId;
@@ -32,6 +34,9 @@ public class Shoes implements UniversalItem {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
+        map.put("defense",this.defense);
+        map.put("movementSpeed",this.movementSpeed);
+        map.put("resistance",this.resistance);
         return map;
     }
 }

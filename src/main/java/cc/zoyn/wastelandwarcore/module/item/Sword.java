@@ -10,13 +10,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Map;
 
 /**
+ * 剑
+ * 
  * @author Zoyn
  * @since 2017-12-10
  */
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Sword implements UniversalItem {
+public class Sword implements UniversalItem,Weapon {
 
     private Material material;
     private int subId;
@@ -30,8 +32,8 @@ public class Sword implements UniversalItem {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
+        map.put("damage",this.damage);
+        map.put("weight",this.weight);
         return map;
     }
-
-
 }

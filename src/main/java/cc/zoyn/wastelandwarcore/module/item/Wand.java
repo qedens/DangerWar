@@ -19,7 +19,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Wand implements UniversalItem, ConfigurationSerializable {
+public class Wand implements UniversalItem,Weapon,ConfigurationSerializable {
 
     private Material material;
     private int subId;
