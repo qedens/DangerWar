@@ -32,6 +32,7 @@ public class Wand implements UniversalItem,Weapon,ConfigurationSerializable {
 
     @Override
     public Map<String, Object> serialize() {
+//    	a
         Map<String, Object> map = Maps.newHashMap();
         map.put("name", itemMeta.getDisplayName());
         map.put("damage", this.damage);

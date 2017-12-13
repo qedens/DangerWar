@@ -31,6 +31,7 @@ public class Sword implements UniversalItem,Weapon {
 
     @Override
     public Map<String, Object> serialize() {
+//    	a
         Map<String, Object> map = Maps.newHashMap();
         map.put("damage",this.damage);
         map.put("weight",this.weight);

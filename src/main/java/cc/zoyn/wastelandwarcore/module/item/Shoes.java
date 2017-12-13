@@ -33,6 +33,7 @@ public class Shoes implements UniversalItem,Armor {
 
     @Override
     public Map<String, Object> serialize() {
+//    	a
         Map<String, Object> map = Maps.newHashMap();
         map.put("defense",this.defense);
         map.put("movementSpeed",this.movementSpeed);
