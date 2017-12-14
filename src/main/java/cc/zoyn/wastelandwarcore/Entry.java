@@ -1,6 +1,7 @@
 package cc.zoyn.wastelandwarcore;
 
 import cc.zoyn.wastelandwarcore.listener.EntityDamageByEntityListener;
+import cc.zoyn.wastelandwarcore.listener.InventoryClickListener;
 import cc.zoyn.wastelandwarcore.module.town.Region;
 import cc.zoyn.wastelandwarcore.module.town.Town;
 import org.bukkit.Bukkit;
@@ -27,6 +28,7 @@ public class Entry extends JavaPlugin {
 
         // 注册事件
         Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
     }
 
     public static Entry getInstance() {

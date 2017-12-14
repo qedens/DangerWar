@@ -6,14 +6,17 @@ import cc.zoyn.wastelandwarcore.module.item.ChestPlate;
 import cc.zoyn.wastelandwarcore.module.item.Shoes;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import static cc.zoyn.wastelandwarcore.util.ItemStackUtils.itemHasDisplayName;
+
 /**
  * 容器点击事件监听
  */
-public class InventoryClickListener {
+public class InventoryClickListener implements Listener {
 
     /**
      * 默认玩家移动速度
@@ -36,18 +39,17 @@ public class InventoryClickListener {
             ItemManager manager = ItemManager.getInstance();
             ItemStack chestItem = pi.getChestplate();
             ItemStack shoesItem = pi.getBoots();
-            if (ItemHasDisplayName(chestItem)) {
+
+            if (itemHasDisplayName(chestItem)) {
 
                 ChestPlate chestPlate = (ChestPlate) manager.getItem(chestItem.getItemMeta().getDisplayName());
             }
-            if (ItemHasDisplayName(shoesItem)) {
+            if (itemHasDisplayName(shoesItem)) {
                 Shoes shoes = (Shoes) manager.getItem(shoesItem.getItemMeta().getDisplayName());
                 player.setWalkSpeed(DEFAULT_PLAYER_MOVEMENT_SPEED + shoes.getMovementSpeed());
             }
         });
     }
 
-    private boolean ItemHasDisplayName(ItemStack is) {
-        return is != null && is.getItemMeta() != null && is.getItemMeta().hasDisplayName();
-    }
+
 }
