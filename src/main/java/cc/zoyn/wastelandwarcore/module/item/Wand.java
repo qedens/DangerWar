@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Wand implements UniversalItem,ConfigurationSerializable {
+public class Wand implements IWeapon {
 
     private Material material;
     private int subId;
@@ -33,13 +32,23 @@ public class Wand implements UniversalItem,ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("name", itemMeta.getDisplayName());
+
+        map.put("material", this.material.toString());
+        map.put("subId", this.subId);
+        map.put("amount", this.amount);
+        map.put("itemMeta", this.itemMeta);
+
         map.put("damage", this.damage);
         map.put("level", this.level);
+        map.put("attributeType", this.attribute.toString());
 
         return map;
     }
 
+    @Override
+    public double getWeight() {
+        return 0;
+    }
 }
 
 

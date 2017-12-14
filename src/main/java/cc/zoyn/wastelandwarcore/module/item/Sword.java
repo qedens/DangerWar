@@ -18,7 +18,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Sword implements UniversalItem {
+public class Sword implements IWeapon {
 
     private Material material;
     private int subId;

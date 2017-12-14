@@ -1,16 +1,14 @@
 package cc.zoyn.wastelandwarcore.module.item;
 
-import java.util.Map;
-import java.util.function.BiFunction;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-
 import com.google.common.collect.Maps;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * 特殊属性
@@ -22,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class SpecialAttribute implements ConfigurationSerializable {
+
     private String name;
     private String description;
     private BiFunction<Player, Arguments, Boolean> executor;
@@ -29,7 +28,8 @@ public class SpecialAttribute implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("name", description);
+        map.put("name", name);
+        map.put("description", description);
         return map;
     }
 }

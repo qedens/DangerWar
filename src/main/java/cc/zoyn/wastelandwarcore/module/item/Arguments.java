@@ -33,18 +33,18 @@ public class Arguments {
         private Class<?> cls;
         private boolean remove = false;
 
-        private <T> ArgsType(String n) {
+        <T> ArgsType(String n) {
             this.Name = n;
             this.cls = float.class;
         }
 
-        private <T> ArgsType(String n, boolean b) {
+        <T> ArgsType(String n, boolean b) {
             this.Name = n;
             this.cls = float.class;
             this.remove = b;
         }
 
-        private <T> ArgsType(String n, Class<? extends T> cls) {
+        <T> ArgsType(String n, Class<? extends T> cls) {
             this.Name = n;
             this.cls = cls;
         }
@@ -60,7 +60,7 @@ public class Arguments {
     }
 
     @Override
-	public String toString() {
+    public String toString() {
         StringBuilder sb = new StringBuilder().append('(');
         for (Map.Entry<ArgsType, Object> e : Args.entrySet()) {
             sb.append(e.getKey().getName()).append(":").append(e.getValue());
@@ -102,7 +102,7 @@ public class Arguments {
                     } else if (a.getCls().isEnum()) {
                         if (a.getCls() == org.bukkit.entity.EntityType.class) {
                             @SuppressWarnings("deprecation")
-							EntityType e = org.bukkit.entity.EntityType.fromName(val);
+                            EntityType e = org.bukkit.entity.EntityType.fromName(val);
                             this.Args.put(a, e);
                             continue A;
                         }
@@ -125,7 +125,7 @@ public class Arguments {
 //                        }
                     } else if (a.getCls() == PotionEffectType.class) {
                         @SuppressWarnings("deprecation")
-						PotionEffectType pt = PotionEffectType.getById(Integer.parseInt(val));
+                        PotionEffectType pt = PotionEffectType.getById(Integer.parseInt(val));
                         this.Args.put(a, pt);
                         continue A;
                     } else {
@@ -187,7 +187,7 @@ public class Arguments {
     }
 
     @SuppressWarnings("unchecked")
-	public <T> T getValue(ArgsType a) {
+    public <T> T getValue(ArgsType a) {
         return (T) Args.get(a);
     }
 

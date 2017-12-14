@@ -1,12 +1,10 @@
 package cc.zoyn.wastelandwarcore.manager;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import lombok.Data;
 import org.apache.commons.lang3.Validate;
 
-import com.google.common.collect.Lists;
-
-import lombok.Data;
+import java.util.List;
 
 /**
  * 抽象管理器
@@ -22,9 +20,11 @@ public abstract class AbstractManager<T> {
     public void addElement(T t) {
         list.add(Validate.notNull(t));
     }
+
     public List<T> getList() {
-    	return list;
+        return list;
     }
+
     public void removeElement(T t) {
         Validate.notNull(t);
 
