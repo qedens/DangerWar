@@ -19,7 +19,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Wand implements UniversalItem,Weapon,ConfigurationSerializable {
+public class Wand implements UniversalItem,ConfigurationSerializable {
 
     private Material material;
     private int subId;
@@ -32,7 +32,6 @@ public class Wand implements UniversalItem,Weapon,ConfigurationSerializable {
 
     @Override
     public Map<String, Object> serialize() {
-//    	a
         Map<String, Object> map = Maps.newHashMap();
         map.put("name", itemMeta.getDisplayName());
         map.put("damage", this.damage);

@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Chest implements UniversalItem,Armor {
+public class Chest implements UniversalItem {
 
     private Material material;
     private int subId;
@@ -34,7 +34,6 @@ public class Chest implements UniversalItem,Armor {
 
     @Override
     public Map<String, Object> serialize() {
-//    	a
         Map<String, Object> map = Maps.newHashMap();
         map.put("defense",this.defense);
         map.put("health",this.health);

@@ -18,7 +18,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Sword implements UniversalItem,Weapon {
+public class Sword implements UniversalItem {
 
     private Material material;
     private int subId;
@@ -31,7 +31,6 @@ public class Sword implements UniversalItem,Weapon {
 
     @Override
     public Map<String, Object> serialize() {
-//    	a
         Map<String, Object> map = Maps.newHashMap();
         map.put("damage",this.damage);
         map.put("weight",this.weight);
