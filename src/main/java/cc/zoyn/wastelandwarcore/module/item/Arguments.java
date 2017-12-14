@@ -59,7 +59,8 @@ public class Arguments {
 
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         StringBuilder sb = new StringBuilder().append('(');
         for (Map.Entry<ArgsType, Object> e : Args.entrySet()) {
             sb.append(e.getKey().getName()).append(":").append(e.getValue());
@@ -100,7 +101,8 @@ public class Arguments {
                         }
                     } else if (a.getCls().isEnum()) {
                         if (a.getCls() == org.bukkit.entity.EntityType.class) {
-                            EntityType e = org.bukkit.entity.EntityType.fromName(val);
+                            @SuppressWarnings("deprecation")
+							EntityType e = org.bukkit.entity.EntityType.fromName(val);
                             this.Args.put(a, e);
                             continue A;
                         }
@@ -122,7 +124,8 @@ public class Arguments {
 //                            Logger.getLogger(Argments.class.getName()).log(Level.SEVERE, null, ex);
 //                        }
                     } else if (a.getCls() == PotionEffectType.class) {
-                        PotionEffectType pt = PotionEffectType.getById(Integer.parseInt(val));
+                        @SuppressWarnings("deprecation")
+						PotionEffectType pt = PotionEffectType.getById(Integer.parseInt(val));
                         this.Args.put(a, pt);
                         continue A;
                     } else {
@@ -183,7 +186,8 @@ public class Arguments {
         return 0f;
     }
 
-    public <T> T getValue(ArgsType a) {
+    @SuppressWarnings("unchecked")
+	public <T> T getValue(ArgsType a) {
         return (T) Args.get(a);
     }
 

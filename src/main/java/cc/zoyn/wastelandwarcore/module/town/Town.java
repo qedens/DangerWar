@@ -25,14 +25,15 @@ public class Town implements ConfigurationSerializable {
     private List<String> members;
     private Region region;
 
-    public static Town deserialize(Map<String, Object> map) {
+    @SuppressWarnings("unchecked")
+	public static Town deserialize(Map<String, Object> map) {
         Validate.notNull(map);
 
         Town town = new Town();
         town.setName((String) map.getOrDefault("name", "null"));
         town.setLevel((int) map.getOrDefault("level", 1));
         town.setOwner((String) map.getOrDefault("owner", "null"));
-        town.setMembers((List) map.get("members"));
+        town.setMembers((List<String>) map.get("members"));
         town.setRegion((Region) map.get("region"));
 
         return town;
