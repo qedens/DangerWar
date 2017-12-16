@@ -1,5 +1,6 @@
 package cc.zoyn.wastelandwarcore.listener;
 
+import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.manager.ItemManager;
 import cc.zoyn.wastelandwarcore.module.item.IArmor;
 import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
@@ -29,7 +30,7 @@ public class EntityDamageByEntityListener implements Listener {
             Player player = (Player) event.getDamager();
 
             PlayerInventory pi = player.getInventory();
-            ItemManager manager = ItemManager.getInstance();
+            ItemManager manager = CoreAPI.getItemManager();
             ItemStack chestItem = pi.getChestplate();
             ItemStack shoeItem = pi.getBoots();
 

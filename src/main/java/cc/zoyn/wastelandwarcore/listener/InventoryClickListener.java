@@ -1,6 +1,7 @@
 package cc.zoyn.wastelandwarcore.listener;
 
 import cc.zoyn.wastelandwarcore.Entry;
+import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.manager.ItemManager;
 import cc.zoyn.wastelandwarcore.module.item.ChestPlate;
 import cc.zoyn.wastelandwarcore.module.item.Shoes;
@@ -39,7 +40,7 @@ public class InventoryClickListener implements Listener {
         final Player player = (Player) event.getWhoClicked();
         Bukkit.getScheduler().runTask(Entry.getInstance(), () -> {
             PlayerInventory pi = player.getInventory();
-            ItemManager manager = ItemManager.getInstance();
+            ItemManager manager = CoreAPI.getItemManager();
             ItemStack chestItem = pi.getChestplate();
             ItemStack shoesItem = pi.getBoots();
 
