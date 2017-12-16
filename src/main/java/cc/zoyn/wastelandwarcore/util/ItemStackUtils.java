@@ -1,15 +1,14 @@
 package cc.zoyn.wastelandwarcore.util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 物品工具类
@@ -17,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author Zoyn
  * @since 2017-12-14
  */
-public class ItemStackUtils {
+public final class ItemStackUtils {
 
     // 防止意外操作
     private ItemStackUtils() {

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.block.Beacon;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.List;
@@ -27,11 +28,38 @@ public class Town implements ConfigurationSerializable {
     private List<String> members;
     private Region region;
 
+    private Beacon centerBeacon;
+
+    /**
+     * 魂晶
+     */
+    private double ghostCrystal;
+    /**
+     * 奥晶
+     */
+    private double arcaneCrystal;
+    /**
+     * 圣晶
+     */
+    private double holyCrystal;
+    /**
+     * 暗钢
+     */
+    private double darkSteelMagicMatter;
+    /**
+     * 秘银
+     */
+    private double mithrilMagicMatter;
+    /**
+     * 恒金
+     */
+    private double eternalGoldMagicMatter;
+
     /**
      * 利用 城镇成员名 获取用户对象
      *
-     * @param memberName
-     * @return
+     * @param memberName 成员名
+     * @return {@link User}
      */
     public User getUserByMemberName(String memberName) {
         return CoreAPI.getUserManager().getUserByName(memberName);

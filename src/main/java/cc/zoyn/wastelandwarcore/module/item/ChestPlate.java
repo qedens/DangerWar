@@ -27,7 +27,6 @@ public class ChestPlate implements IArmor {
 
     private double defense;
     private double health;
-    private double weight;
     private double resistance;
 
     @Override
@@ -40,8 +39,9 @@ public class ChestPlate implements IArmor {
 
         map.put("defense", this.defense);
         map.put("health", this.health);
-        map.put("weight", this.weight);
         map.put("resistance", this.resistance);
         return map;
     }
+
+
 }
