@@ -1,6 +1,7 @@
 package cc.zoyn.wastelandwarcore.module.town;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 区域
@@ -31,6 +33,13 @@ public class Region implements ConfigurationSerializable {
     private long createTime;
     private List<String> allowedPlayers;
     private Location teleportPoint;
+
+    public Set<Location> getLocationSet() {
+        Set<Location> set = Sets.newHashSet();
+
+
+        return set;
+    }
 
     /**
      * 判断坐标是否含于该区域
@@ -59,7 +68,7 @@ public class Region implements ConfigurationSerializable {
     }
 
     @SuppressWarnings("unchecked")
-	public static Region deserialize(Map<String, Object> map) {
+    public static Region deserialize(Map<String, Object> map) {
         Validate.notNull(map);
 
         Region region = new Region();

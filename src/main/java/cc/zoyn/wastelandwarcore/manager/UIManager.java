@@ -39,7 +39,7 @@ public class UIManager extends AbstractManager<UI> {
      * @param uiName 城镇名
      * @return {@link UI}
      */
-    public UI getUI(String uiName) {
+    public UI getUIByName(String uiName) {
         for (UI ui : getList()) {
             if (ui.getInventory().getTitle().equals(uiName)) {
                 return ui;

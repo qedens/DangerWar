@@ -39,7 +39,7 @@ public class ItemManager extends AbstractManager<UniversalItem> {
      * @param itemName 物品名
      * @return {@link UniversalItem}
      */
-    public UniversalItem getItem(String itemName) {
+    public UniversalItem getItemByName(String itemName) {
         for (UniversalItem item : getList()) {
             if (item.getItemMeta() == null) {
                 continue;

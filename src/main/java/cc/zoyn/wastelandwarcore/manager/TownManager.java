@@ -39,7 +39,7 @@ public class TownManager extends AbstractManager<Town> {
      * @param townName 城镇名
      * @return {@link Town}
      */
-    public Town getTown(String townName) {
+    public Town getTownByName(String townName) {
         for (Town town : getList()) {
             if (town.getName().equals(townName)) {
                 return town;
