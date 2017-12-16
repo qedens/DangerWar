@@ -1,5 +1,7 @@
 package cc.zoyn.wastelandwarcore.module.town;
 
+import cc.zoyn.wastelandwarcore.api.CoreAPI;
+import cc.zoyn.wastelandwarcore.module.common.user.User;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +27,18 @@ public class Town implements ConfigurationSerializable {
     private List<String> members;
     private Region region;
 
+    /**
+     * 利用 城镇成员名 获取用户对象
+     *
+     * @param memberName
+     * @return
+     */
+    public User getUserByMemberName(String memberName) {
+        return CoreAPI.getUserManager().getUserByName(memberName);
+    }
+
     @SuppressWarnings("unchecked")
-	public static Town deserialize(Map<String, Object> map) {
+    public static Town deserialize(Map<String, Object> map) {
         Validate.notNull(map);
 
         Town town = new Town();

@@ -1,0 +1,2 @@
+GeneralOption:
+  PlayerChatFormat: "[%channel%][%town_name%]%player_name%: %message%"

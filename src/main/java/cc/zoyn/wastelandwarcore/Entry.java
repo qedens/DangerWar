@@ -1,7 +1,6 @@
 package cc.zoyn.wastelandwarcore;
 
-import cc.zoyn.wastelandwarcore.listener.EntityDamageByEntityListener;
-import cc.zoyn.wastelandwarcore.listener.InventoryClickListener;
+import cc.zoyn.wastelandwarcore.listener.*;
 import cc.zoyn.wastelandwarcore.module.town.Region;
 import cc.zoyn.wastelandwarcore.module.town.Town;
 import org.bukkit.Bukkit;
@@ -22,6 +21,8 @@ public class Entry extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        saveDefaultConfig();
+
         // 注册序列化
         ConfigurationSerialization.registerClass(Region.class);
         ConfigurationSerialization.registerClass(Town.class);
@@ -29,6 +30,9 @@ public class Entry extends JavaPlugin {
         // 注册事件
         Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AsyncPlayerChatListener(), this);
     }
 
     public static Entry getInstance() {
