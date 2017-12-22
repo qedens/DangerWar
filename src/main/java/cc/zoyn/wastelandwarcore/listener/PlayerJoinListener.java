@@ -19,11 +19,14 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        Channel channel = CoreAPI.getChannelManager().getChannelByName("系统");
-        Town town = CoreAPI.getTownManager().getTownByName("null");
-        User user = new User(player.getName(), channel, town, null);
+        // 判断是否已经有缓存放在UserManager中
+        if (CoreAPI.getUserManager().getUserByName(player.getName()) == null) {
+            Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
+            Town town = CoreAPI.getTownManager().getTownByName("null");
+            User user = new User(player.getName(), channel, town, null);
 
-        CoreAPI.getUserManager().addElement(user);
+            CoreAPI.getUserManager().addElement(user);
+        }
     }
 
 }

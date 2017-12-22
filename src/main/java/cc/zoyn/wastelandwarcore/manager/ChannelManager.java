@@ -1,6 +1,10 @@
 package cc.zoyn.wastelandwarcore.manager;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * 频道管理器
@@ -11,6 +15,12 @@ import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
 public class ChannelManager extends AbstractManager<Channel> {
 
     private static volatile ChannelManager instance;
+    private final static Channel DEFAULT_CHANNEL = getInstance().getChannelByName(Entry.getInstance().getConfig().getString("GeneralOption.ChannelOption.DefaultChannel"));
+
+    {
+        List<String> channelList = Entry.getInstance().getConfig().getStringList("GeneralOption.ChannelOption.Channels");
+        channelList.forEach(s -> this.addElement(new Channel(s, Lists.newArrayList())));
+    }
 
     // 防止意外实例化
     private ChannelManager() {
@@ -30,6 +40,15 @@ public class ChannelManager extends AbstractManager<Channel> {
             }
         }
         return instance;
+    }
+
+    /**
+     * 获取默认频道
+     *
+     * @return {@link Channel}
+     */
+    public Channel getDefaultChannel() {
+        return DEFAULT_CHANNEL;
     }
 
     /**
