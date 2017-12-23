@@ -2,7 +2,6 @@ package cc.zoyn.wastelandwarcore.manager;
 
 import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class ChannelManager extends AbstractManager<Channel> {
 
     {
         List<String> channelList = Entry.getInstance().getConfig().getStringList("GeneralOption.ChannelOption.Channels");
-        channelList.forEach(s -> this.addElement(new Channel(s, Lists.newArrayList())));
+        channelList.forEach(s -> this.addElement(new Channel(s)));
     }
 
     // 防止意外实例化

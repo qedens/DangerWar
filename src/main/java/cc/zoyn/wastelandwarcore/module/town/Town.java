@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 表示一个城镇
+ *
  * @author Zoyn
  * @since 2017-12-09
  */
@@ -63,6 +65,28 @@ public class Town implements ConfigurationSerializable {
      */
     public User getUserByMemberName(String memberName) {
         return CoreAPI.getUserManager().getUserByName(memberName);
+    }
+
+    /**
+     * 判断一个玩家名是不是城主
+     *
+     * @param playerName 玩家名
+     * @return
+     */
+    public boolean isOwner(String playerName) {
+        return owner.equals(playerName);
+    }
+
+    /**
+     * 判断一个玩家名是不是成员
+     *
+     * @param playerName 玩家名
+     * @return
+     */
+    public boolean isMember(String playerName) {
+        return members
+                .stream()
+                .anyMatch(s -> s.equals(playerName));
     }
 
     @SuppressWarnings("unchecked")

@@ -2,3 +2,7 @@ name: WastelandWarCore
 main: cc.zoyn.wastelandwarcore.Entry
 version: 0.0.1
 author: [Zoyn]
+commands:
+  core:
+    aliases: [help]
+    description: "主命令"

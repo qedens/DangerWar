@@ -1,8 +1,8 @@
 package cc.zoyn.wastelandwarcore.module.common.chat;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -17,13 +17,22 @@ import java.util.List;
  * @since 2017-12-16
  */
 @Data
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class Channel {
 
-    private final String DEFAULT_PREFIX = String.format("§c[§6%s§c] ", getName());
+    private final String channelFormat = Entry.getInstance().getConfig().getString("GeneralOption.PlayerChatFormat");
     private String name;
     private List<User> userList;
+
+    public Channel(String channelName) {
+        this.name = channelName;
+        userList = Lists.newArrayList();
+    }
+
+    public Channel(String channelName, List<User> userList) {
+        this.name = channelName;
+        this.userList = userList;
+    }
 
     /**
      * 获取该频道在线的玩家列表
@@ -44,9 +53,37 @@ public class Channel {
         return playerList;
     }
 
-    public void sendMessage(Player user, String message) {
-        getOnlinePlayers().forEach(player -> player.sendMessage(DEFAULT_PREFIX + message));
+    /**
+     * 给这个频道里的所有人发送信息
+     *
+     * @param user    用户
+     * @param message 消息
+     * @return 发送给所有人的信息
+     */
+    public String sendMessage(User user, String message) {
+        String formatted = formattedMessage(user, message);
+        getOnlinePlayers().forEach(player -> player.sendMessage(formatted));
+        return formatted;
     }
 
+    public void addUser(User user) {
+        if (!userList.contains(user)) {
+            userList.add(user);
+        }
+    }
 
+    public void removeUser(User user) {
+        if (userList.contains(user)) {
+            userList.remove(user);
+        }
+    }
+
+    private String formattedMessage(User user, String message) {
+        return channelFormat
+                .replaceAll("&", "§")
+                .replaceAll("%channel%", getName())
+                .replaceAll("%town_name%", user.getTown().getName())
+                .replaceAll("%player_name%", user.getName())
+                .replaceAll("%message%", message);
+    }
 }

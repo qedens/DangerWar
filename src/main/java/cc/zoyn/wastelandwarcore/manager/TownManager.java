@@ -1,6 +1,7 @@
 package cc.zoyn.wastelandwarcore.manager;
 
 import cc.zoyn.wastelandwarcore.module.town.Town;
+import com.google.common.collect.Lists;
 
 /**
  * 城镇管理器
@@ -11,6 +12,24 @@ import cc.zoyn.wastelandwarcore.module.town.Town;
 public class TownManager extends AbstractManager<Town> {
 
     private static volatile TownManager instance;
+
+    {
+        this.addElement(
+                new Town(
+                        "流民",
+                        1,
+                        null,
+                        Lists.newArrayList(),
+                        null,
+                        null,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0)
+        );
+    }
 
     // 防止意外实例化
     private TownManager() {
@@ -46,6 +65,20 @@ public class TownManager extends AbstractManager<Town> {
             }
         }
         return null;
+    }
+
+    /**
+     * 利用城镇成员名获取城镇, 若玩家不存在任何一个城镇则返回 流民
+     *
+     * @param memberName 城镇成员名
+     * @return {@link Town}
+     */
+    public Town getTownByMember(String memberName) {
+        return getList()
+                .stream()
+                .filter(town -> town.getUserByMemberName(memberName) != null)
+                .findFirst()
+                .orElse(getTownByName("流民"));
     }
 
 }
