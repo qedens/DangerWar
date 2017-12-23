@@ -23,7 +23,7 @@ public class PlayerJoinListener implements Listener {
         if (CoreAPI.getUserManager().getUserByName(player.getName()) == null) {
             Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
             Town town = CoreAPI.getTownManager().getTownByMember(player.getName());
-            User user = new User(player.getName(), channel, town, null);
+            User user = new User(player.getName(), channel.getName(), town.getName(), null);
 
             channel.addUser(user);
             CoreAPI.getUserManager().addElement(user);

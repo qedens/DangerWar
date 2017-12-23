@@ -1,6 +1,13 @@
 package cc.zoyn.wastelandwarcore.manager;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
+import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
+import org.apache.commons.lang3.Validate;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 物品管理器
@@ -8,7 +15,7 @@ import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
  * @author Zoyn
  * @since 2017-12-10
  */
-public class ItemManager extends AbstractManager<UniversalItem> {
+public class ItemManager extends AbstractManager<UniversalItem> implements SavableManager<UniversalItem> {
 
     private static volatile ItemManager instance;
 
@@ -54,4 +61,18 @@ public class ItemManager extends AbstractManager<UniversalItem> {
         return null;
     }
 
+    @Override
+    public void saveElements(List<UniversalItem> elements) {
+        elements.forEach(this::saveElement);
+    }
+
+    @Override
+    public void saveElement(UniversalItem universalItem) {
+        Validate.notNull(universalItem);
+
+        File file = new File(Entry.getInstance().getItemFolder(), universalItem.getItemMeta().getDisplayName() + ".yml");
+        FileConfiguration fileConfiguration = ConfigurationUtils.loadYml(file);
+        fileConfiguration.set("Item", universalItem);
+        ConfigurationUtils.saveYml(fileConfiguration, file);
+    }
 }

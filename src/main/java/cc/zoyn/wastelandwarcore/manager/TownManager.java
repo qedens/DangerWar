@@ -1,7 +1,14 @@
 package cc.zoyn.wastelandwarcore.manager;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.Validate;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 城镇管理器
@@ -9,7 +16,7 @@ import com.google.common.collect.Lists;
  * @author Zoyn
  * @since 2017-12-09
  */
-public class TownManager extends AbstractManager<Town> {
+public class TownManager extends AbstractManager<Town> implements SavableManager<Town> {
 
     private static volatile TownManager instance;
 
@@ -81,4 +88,18 @@ public class TownManager extends AbstractManager<Town> {
                 .orElse(getTownByName("流民"));
     }
 
+    @Override
+    public void saveElements(List<Town> elements) {
+        elements.forEach(this::saveElement);
+    }
+
+    @Override
+    public void saveElement(Town town) {
+        Validate.notNull(town);
+
+        File file = new File(Entry.getInstance().getTownFolder(), town.getName() + ".yml");
+        FileConfiguration fileConfiguration = ConfigurationUtils.loadYml(file);
+        fileConfiguration.set("Town", town);
+        ConfigurationUtils.saveYml(fileConfiguration, file);
+    }
 }

@@ -21,12 +21,11 @@ public class AsyncPlayerChatListener implements Listener {
         Player player = event.getPlayer();
 
         User user = CoreAPI.getUserManager().getUserByName(player.getName());
-
-        // 防止 reload 时出现用户数据不存在的问题
+        // 防止 reload 后出现用户数据不存在的问题
         if (user == null) {
             Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
             Town town = CoreAPI.getTownManager().getTownByMember(player.getName());
-            user = new User(player.getName(), channel, town, null);
+            user = new User(player.getName(), channel.getName(), town.getName(), null);
 
             channel.addUser(user);
             CoreAPI.getUserManager().addElement(user);

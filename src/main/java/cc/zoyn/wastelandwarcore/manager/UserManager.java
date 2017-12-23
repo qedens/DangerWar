@@ -1,6 +1,13 @@
 package cc.zoyn.wastelandwarcore.manager;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
+import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
+import org.apache.commons.lang3.Validate;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 用户管理器
@@ -8,7 +15,7 @@ import cc.zoyn.wastelandwarcore.module.common.user.User;
  * @author Zoyn
  * @since 2017-12-16
  */
-public class UserManager extends AbstractManager<User> {
+public class UserManager extends AbstractManager<User> implements SavableManager<User> {
 
     private static volatile UserManager instance;
 
@@ -48,4 +55,18 @@ public class UserManager extends AbstractManager<User> {
         return null;
     }
 
+    @Override
+    public void saveElements(List<User> elements) {
+        elements.forEach(this::saveElement);
+    }
+
+    @Override
+    public void saveElement(User user) {
+        Validate.notNull(user);
+
+        File file = new File(Entry.getInstance().getUserFolder(), user.getName() + ".yml");
+        FileConfiguration fileConfiguration = ConfigurationUtils.loadYml(file);
+        fileConfiguration.set("User", user);
+        ConfigurationUtils.saveYml(fileConfiguration, file);
+    }
 }

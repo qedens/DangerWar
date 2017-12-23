@@ -2,8 +2,12 @@ package cc.zoyn.wastelandwarcore;
 
 import cc.zoyn.wastelandwarcore.command.CommandHandler;
 import cc.zoyn.wastelandwarcore.listener.*;
+import cc.zoyn.wastelandwarcore.module.common.user.User;
 import cc.zoyn.wastelandwarcore.module.town.Region;
 import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
+import cc.zoyn.wastelandwarcore.runnable.UserDataSaveRunnable;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,8 +23,11 @@ import java.io.File;
 public class Entry extends JavaPlugin {
 
     private static Entry instance;
+    @Getter
     private File townFolder;
+    @Getter
     private File itemFolder;
+    @Getter
     private File userFolder;
 
     @Override
@@ -36,6 +43,7 @@ public class Entry extends JavaPlugin {
         // 注册序列化
         ConfigurationSerialization.registerClass(Region.class);
         ConfigurationSerialization.registerClass(Town.class);
+        ConfigurationSerialization.registerClass(User.class);
 
         // 注册事件
         Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
@@ -46,6 +54,12 @@ public class Entry extends JavaPlugin {
 
         // 注册命令
         Bukkit.getPluginCommand("core").setExecutor(new CommandHandler());
+
+        TownDataSaveRunnable townRunnable = new TownDataSaveRunnable();
+        UserDataSaveRunnable userRunnable = new UserDataSaveRunnable();
+
+        townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
+        userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
     }
 
     public static Entry getInstance() {
@@ -55,9 +69,11 @@ public class Entry extends JavaPlugin {
     private void createFiles() {
         if (!townFolder.exists()) {
             townFolder.mkdirs();
-        } else if (!itemFolder.exists()) {
+        }
+        if (!itemFolder.exists()) {
             itemFolder.mkdirs();
-        } else if (!userFolder.exists()) {
+        }
+        if (!userFolder.exists()) {
             userFolder.mkdirs();
         }
     }

@@ -1,6 +1,8 @@
 package cc.zoyn.wastelandwarcore.command;
 
 import cc.zoyn.wastelandwarcore.command.subcommand.HelpCommand;
+import cc.zoyn.wastelandwarcore.command.subcommand.SaveCommand;
+import cc.zoyn.wastelandwarcore.command.subcommand.WhoisCommand;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -22,6 +24,8 @@ public class CommandHandler implements CommandExecutor {
 
     public CommandHandler() {
         registerCommand("help", new HelpCommand());
+        registerCommand("save", new SaveCommand());
+        registerCommand("whois", new WhoisCommand());
     }
 
     public void registerCommand(String commandName, SubCommand subCommand) {
