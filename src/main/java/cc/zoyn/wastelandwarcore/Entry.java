@@ -35,9 +35,9 @@ public class Entry extends JavaPlugin {
         instance = this;
 
         saveDefaultConfig();
-        townFolder = new File(getDataFolder(), "\\town");
-        itemFolder = new File(getDataFolder(), "\\item");
-        userFolder = new File(getDataFolder(), "\\user");
+        townFolder = new File(getDataFolder(), "town");
+        itemFolder = new File(getDataFolder(), "item");
+        userFolder = new File(getDataFolder(), "user");
         createFiles();
 
         // 注册序列化
