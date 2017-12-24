@@ -63,11 +63,13 @@ public final class ConfigurationUtils {
             Field f = YamlConfiguration.class.getDeclaredField("yamlOptions");
             f.setAccessible(true);
             yamlOptions = new DumperOptions() {
-                public void setAllowUnicode(boolean allowUnicode) {
+                @Override
+				public void setAllowUnicode(boolean allowUnicode) {
                     super.setAllowUnicode(false);
                 }
 
-                public void setLineBreak(DumperOptions.LineBreak lineBreak) {
+                @Override
+				public void setLineBreak(DumperOptions.LineBreak lineBreak) {
                     super.setLineBreak(DumperOptions.LineBreak.getPlatformLineBreak());
                 }
             };

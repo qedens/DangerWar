@@ -55,7 +55,6 @@ public class User implements ConfigurationSerializable {
         return CoreAPI.getTownManager().getTownByName(town);
     }
 
-    @SuppressWarnings("unchecked")
     public static User deserialize(Map<String, Object> map) {
         Validate.notNull(map);
 

@@ -7,6 +7,7 @@ import cc.zoyn.wastelandwarcore.module.item.ChestPlate;
 import cc.zoyn.wastelandwarcore.module.item.Shoes;
 import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -48,8 +49,8 @@ public class InventoryClickListener implements Listener {
             if (itemHasDisplayName(chestItem)) {
                 UniversalItem item = manager.getItemByName(chestItem.getItemMeta().getDisplayName());
                 if (item instanceof ChestPlate) {
-                    ChestPlate chestPlate = (ChestPlate) manager.getItemByName(chestItem.getItemMeta().getDisplayName());
-                    player.setMaxHealth(DEFAULT_PLAYER_MAXHEALTH + chestPlate.getHealth());
+                    ChestPlate chestPlate = (ChestPlate) item;
+                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(DEFAULT_PLAYER_MAXHEALTH + chestPlate.getHealth());
                 }
             }
 
