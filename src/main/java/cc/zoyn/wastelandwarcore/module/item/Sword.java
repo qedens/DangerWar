@@ -27,22 +27,16 @@ public class Sword implements IWeapon {
 
     private double damage;
     private AttributeType attribute;
-
+    private double armorBreak;
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("material", this.material.toString());
-        map.put("subId", this.subId);
-        map.put("amount", this.amount);
-        map.put("itemMeta", this.itemMeta);
-
         map.put("damage",this.damage);
-        map.put("attributetype", this.attribute.toString());
+        map.put("armorBreak",this.armorBreak);
         return map;
     }
-
-    @Override
-    public double getWeight() {
-        return 0;
-    }
+	@Override
+	public double getArmorBreak() {
+		return armorBreak;
+	}
 }

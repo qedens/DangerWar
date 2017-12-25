@@ -26,9 +26,8 @@ public class Wand implements IWeapon {
     private ItemMeta itemMeta;
 
     private double damage;
-    private int level;
     private AttributeType attribute;
-
+    private double armorBreak;
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
@@ -39,16 +38,13 @@ public class Wand implements IWeapon {
         map.put("itemMeta", this.itemMeta);
 
         map.put("damage", this.damage);
-        map.put("level", this.level);
+        map.put("armorBreak",this.armorBreak);
         map.put("attributeType", this.attribute.toString());
 
         return map;
     }
-
-    @Override
-    public double getWeight() {
-        return 0;
-    }
+	@Override
+	public double getArmorBreak() {
+		return armorBreak;
+	}
 }
-
-
