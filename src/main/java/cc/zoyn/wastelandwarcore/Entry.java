@@ -1,21 +1,27 @@
 package cc.zoyn.wastelandwarcore;
 
-import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.command.CommandHandler;
-import cc.zoyn.wastelandwarcore.listener.*;
-import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
-import cc.zoyn.wastelandwarcore.module.common.user.User;
-import cc.zoyn.wastelandwarcore.module.town.Region;
-import cc.zoyn.wastelandwarcore.module.town.Town;
-import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
-import cc.zoyn.wastelandwarcore.runnable.UserDataSaveRunnable;
-import lombok.Getter;
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import cc.zoyn.wastelandwarcore.api.CoreAPI;
+import cc.zoyn.wastelandwarcore.command.CommandHandler;
+import cc.zoyn.wastelandwarcore.listener.AsyncPlayerChatListener;
+import cc.zoyn.wastelandwarcore.listener.EntityDamageByEntityListener;
+import cc.zoyn.wastelandwarcore.listener.InventoryClickListener;
+import cc.zoyn.wastelandwarcore.listener.PlayerJoinListener;
+import cc.zoyn.wastelandwarcore.listener.PlayerQuitListener;
+import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
+import cc.zoyn.wastelandwarcore.module.common.user.User;
+import cc.zoyn.wastelandwarcore.module.town.Region;
+import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.player.effects.SpecialEffectRunnable;
+import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
+import cc.zoyn.wastelandwarcore.runnable.UserDataSaveRunnable;
+import lombok.Getter;
 
 /**
  * 插件主类
@@ -67,10 +73,13 @@ public class Entry extends JavaPlugin {
 
         // 注册命令
         Bukkit.getPluginCommand("core").setExecutor(new CommandHandler());
-
+        
+        // 注册 玩家效果调度器
+        new SpecialEffectRunnable(this);
+        
         TownDataSaveRunnable townRunnable = new TownDataSaveRunnable();
         UserDataSaveRunnable userRunnable = new UserDataSaveRunnable();
-
+        
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
     }

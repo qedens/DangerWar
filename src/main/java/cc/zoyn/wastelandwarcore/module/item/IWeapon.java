@@ -11,10 +11,4 @@ public interface IWeapon extends UniversalItem {
      * @return 武器伤害值
      */
     double getDamage();
-    /**
-     * 获取武器的破甲值
-     * 
-     * @return 破甲值
-     */
-    double getArmorBreak();
 }
