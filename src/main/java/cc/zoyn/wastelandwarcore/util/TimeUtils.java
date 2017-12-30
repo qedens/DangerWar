@@ -14,7 +14,13 @@ import java.util.Date;
  */
 public final class TimeUtils {
 
+    /**
+     * 默认时间格式
+     */
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    /**
+     * 中式时间格式
+     */
     private static final String CHINESE_DATE_FORMAT = "yyyy年MM月dd日";
 
     // 防止意外操作

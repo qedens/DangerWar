@@ -8,13 +8,13 @@ public interface IArmor extends UniversalItem {
 
     /**
      * 获取该防具的防御值
-     * @return
+     * @return 防御值
      */
     double getDefense();
 
     /**
      * 获取该防具的特殊属性抵抗
-     * @return
+     * @return 特殊属性抵抗
      */
     double getResistance();
 

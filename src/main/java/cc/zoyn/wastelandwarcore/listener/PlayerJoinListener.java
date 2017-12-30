@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
+ * 玩家加入监听器
+ *
  * @author Zoyn
  * @since 2017-12-16
  */

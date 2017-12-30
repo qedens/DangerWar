@@ -9,6 +9,7 @@ import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -35,9 +36,12 @@ public class InventoryClickListener implements Listener {
      *
      * @param event 背包点击事件
      */
+    @EventHandler
     public void onInventoryClick(final InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player))
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
+        }
+
         final Player player = (Player) event.getWhoClicked();
         Bukkit.getScheduler().runTask(Entry.getInstance(), () -> {
             PlayerInventory pi = player.getInventory();

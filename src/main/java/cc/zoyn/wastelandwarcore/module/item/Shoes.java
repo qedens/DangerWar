@@ -41,6 +41,11 @@ public class Shoes implements IArmor {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
+        map.put("material", this.material.toString());
+        map.put("subId", this.subId);
+        map.put("amount", this.amount);
+        map.put("itemMeta", this.itemMeta);
+
         map.put("defense", this.defense);
         map.put("movementSpeed", this.movementSpeed);
         map.put("resistance", this.resistance);
