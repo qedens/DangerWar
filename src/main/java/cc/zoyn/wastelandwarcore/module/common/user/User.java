@@ -2,6 +2,7 @@ package cc.zoyn.wastelandwarcore.module.common.user;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
+import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
 import cc.zoyn.wastelandwarcore.module.common.talent.Talent;
 import cc.zoyn.wastelandwarcore.module.town.Town;
 import com.google.common.collect.Maps;
@@ -23,7 +24,6 @@ import java.util.Map;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class User implements ConfigurationSerializable {
-
     /**
      * 用户名
      */
@@ -46,6 +46,30 @@ public class User implements ConfigurationSerializable {
     @Getter
     @Setter
     private Talent talent;
+    /**
+     * 用户护甲
+     */
+    @Getter
+    @Setter
+    private double armor;
+    /**
+     * 用户抗性
+     */
+    @Getter
+    @Setter
+    private double resistance;
+    /**
+     * 用户速度(未经过效果削弱)
+     */
+    @Getter
+    @Setter
+    private float moveSpeed;
+    /**
+     * 玩家身上效果合集
+     */
+    @Getter
+    @Setter
+    private SpecialEffectPlayer effects;
 
     public Channel getChannel() {
         return CoreAPI.getChannelManager().getChannelByName(channel);
@@ -63,6 +87,10 @@ public class User implements ConfigurationSerializable {
         user.setChannel((String) map.get("channel"));
         user.setTown((String) map.get("town"));
         user.setTalent((Talent) map.get("talent"));
+        user.setArmor((double) map.get("armor"));
+        user.setResistance((double) map.get("resistance"));
+        user.setMoveSpeed((float) map.get("moveSpeed"));
+        user.setEffects((SpecialEffectPlayer) map.get("effects"));
         return user;
     }
 
@@ -73,7 +101,10 @@ public class User implements ConfigurationSerializable {
         map.put("channel", channel);
         map.put("town", town);
         map.put("talent", talent);
-
+        map.put("armor",armor);
+        map.put("resistance",resistance);
+        map.put("moveSpeed",moveSpeed);
+        map.put("effects",effects);
         return map;
     }
 }

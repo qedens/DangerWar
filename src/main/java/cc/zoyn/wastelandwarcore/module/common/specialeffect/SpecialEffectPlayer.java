@@ -1,7 +1,8 @@
 package cc.zoyn.wastelandwarcore.module.common.specialeffect;
 
-import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect.SpecialEffectType;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
@@ -12,27 +13,12 @@ import java.util.Map;
  */
 public class SpecialEffectPlayer {
     /**
-     * 全服玩家的属性合集
+     * 玩家的效果合集
      */
-    private static final Map<String, SpecialEffectPlayer> players = Maps.newHashMap();
+    private Map<SpecialEffectType,SpecialEffectPlayerValue> effects = Maps.newHashMap();
 
-    public static SpecialEffectPlayer getPlayerEffect(String name) {
-        if (players.containsKey(name))
-            return players.get(name);
-        return null;
-    }
-
-    public static void removePlayerEffect(String name) {
-        players.remove(name);
-    }
-
-    /**
-     * 单独一个玩家的属性合集
-     */
-    private Map<SpecialEffectType, SpecialEffect> effects = Maps.newHashMap();
-
-    public void addSpecialEffect(SpecialEffectType type, SpecialEffect effect) {
-        effects.put(type, effect);
+    public void addSpecialEffect(SpecialEffect effect) {
+        effects.put(effect.getType(),new SpecialEffectPlayerValue(effect));
     }
 
     public boolean hasSpecialEffect(SpecialEffectType type) {
@@ -40,12 +26,10 @@ public class SpecialEffectPlayer {
             return false;
         return effects.get(type).getNowDuration() > 0;
     }
-
     public void removeSpecialEffect(SpecialEffectType type) {
         if (effects.containsKey(type))
             effects.remove(type);
     }
-
     public SpecialEffect getSpecialEffect(SpecialEffectType type) {
         if (effects.containsKey(type))
             return effects.get(type);
@@ -82,5 +66,32 @@ public class SpecialEffectPlayer {
         if (armorValue <= 0)
             return armor;
         return armor * 30 / (30 + armorValue);
+    }
+}
+class SpecialEffectPlayerValue extends SpecialEffect {
+    /**
+     * 效果开始时间
+     */
+    @Getter
+    private final long startDuration;
+    /**
+     * 效果当前经过时间
+     */
+    @Getter
+    @Setter
+    private long nowDuration;
+
+    public SpecialEffectPlayerValue(SpecialEffect effect) {
+        super(effect.getType(),effect.getDuration(),effect.getLevel());
+        startDuration = System.currentTimeMillis();
+        nowDuration = System.currentTimeMillis();
+    }
+    /**
+     * 获取剩余的时间
+     * @return 剩余的时间
+     */
+    public long getRestDuration() {
+        long rest = startDuration+getDuration()-nowDuration;
+        return rest>0 ? rest : 0;
     }
 }

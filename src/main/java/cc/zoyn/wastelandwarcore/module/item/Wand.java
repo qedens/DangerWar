@@ -1,5 +1,6 @@
 package cc.zoyn.wastelandwarcore.module.item;
 
+import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +27,7 @@ public class Wand implements IWeapon {
     private int amount;
     private ItemMeta itemMeta;
 
+    private List<SpecialEffect> effects;
     private double damage;
     private AttributeType attribute;
     @Override
@@ -38,7 +41,7 @@ public class Wand implements IWeapon {
 
         map.put("damage", this.damage);
         map.put("attributeType", this.attribute.toString());
-
+        map.put("effects",effects);
         return map;
     }
 }

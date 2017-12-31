@@ -4,11 +4,14 @@ import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.command.CommandHandler;
 import cc.zoyn.wastelandwarcore.listener.*;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
+import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
 import cc.zoyn.wastelandwarcore.module.town.Region;
 import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.runnable.SpecialEffectRunnable;
 import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
 import cc.zoyn.wastelandwarcore.runnable.UserDataSaveRunnable;
+import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -52,7 +55,9 @@ public class Entry extends JavaPlugin {
         for (Player player : getServer().getOnlinePlayers()) {
             Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
             Town town = CoreAPI.getTownManager().getTownByMember(player.getName());
-            User user = new User(player.getName(), channel.getName(), town.getName(), null);
+            User user = new User(player.getName(), channel.getName(), town.getName(), null,
+                    PlayerUtils.getArmor(player),PlayerUtils.getResistance(player),PlayerUtils.getMoveSpeed(player),
+                    new SpecialEffectPlayer());
 
             channel.addUser(user);
             CoreAPI.getUserManager().addElement(user);
@@ -71,7 +76,9 @@ public class Entry extends JavaPlugin {
         // 注册调度器
         TownDataSaveRunnable townRunnable = new TownDataSaveRunnable();
         UserDataSaveRunnable userRunnable = new UserDataSaveRunnable();
+        SpecialEffectRunnable effectRunnable = new SpecialEffectRunnable();
 
+        effectRunnable.runTaskTimer(this,20l,20l);
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
     }
