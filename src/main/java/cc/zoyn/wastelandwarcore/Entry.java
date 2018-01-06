@@ -56,7 +56,7 @@ public class Entry extends JavaPlugin {
             Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
             Town town = CoreAPI.getTownManager().getTownByMember(player.getName());
             User user = new User(player.getName(), channel.getName(), town.getName(), null,
-                    PlayerUtils.getArmor(player),PlayerUtils.getResistance(player),PlayerUtils.getMoveSpeed(player),
+                    PlayerUtils.getArmor(player), PlayerUtils.getResistance(player), PlayerUtils.getMoveSpeed(player),
                     new SpecialEffectPlayer());
 
             channel.addUser(user);
@@ -78,7 +78,7 @@ public class Entry extends JavaPlugin {
         UserDataSaveRunnable userRunnable = new UserDataSaveRunnable();
         SpecialEffectRunnable effectRunnable = new SpecialEffectRunnable();
 
-        effectRunnable.runTaskTimer(this,20l,20l);
+        effectRunnable.runTaskTimer(this, 20l, 20l);
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
     }

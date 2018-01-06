@@ -22,39 +22,46 @@ public final class PlayerUtils {
     /**
      * 默认玩家最大血量上限
      */
-    private static final double DEFAULT_PLAYER_MAXHEALTH = 20.0;
+    private static final double DEFAULT_PLAYER_MAX_HEALTH = 20.0;
+
+    // 防止意外构造
     private PlayerUtils() {
     }
+
     /**
      * 获取玩家的最大生命值上限
+     *
      * @param player 玩家
      * @return 玩家的最大生命值上限
      */
     public static double getMaxHealth(Player player) {
         ItemStack chestItem = player.getInventory().getChestplate();
-        if(ItemStackUtils.itemHasDisplayName(chestItem)) {
+        if (ItemStackUtils.itemHasDisplayName(chestItem)) {
             UniversalItem uitem = ItemManager.getInstance().getItemByName(chestItem.getItemMeta().getDisplayName());
-            if(uitem instanceof ChestPlate) {
-                return DEFAULT_PLAYER_MAXHEALTH+((ChestPlate)uitem).getHealth();
+            if (uitem instanceof ChestPlate) {
+                return DEFAULT_PLAYER_MAX_HEALTH + ((ChestPlate) uitem).getHealth();
             }
         }
-        return DEFAULT_PLAYER_MAXHEALTH;
+        return DEFAULT_PLAYER_MAX_HEALTH;
     }
+
     /**
      * 获取玩家的速度(未经效果削弱)
+     *
      * @param player 玩家
      * @return 玩家的速度(未经效果削弱)
      */
     public static float getMoveSpeed(Player player) {
         ItemStack shoeItem = player.getInventory().getBoots();
-        if(ItemStackUtils.itemHasDisplayName(shoeItem)) {
+        if (ItemStackUtils.itemHasDisplayName(shoeItem)) {
             UniversalItem uitem = ItemManager.getInstance().getItemByName(shoeItem.getItemMeta().getDisplayName());
-            if(uitem instanceof Shoes) {
-                return DEFAULT_PLAYER_MOVEMENT_SPEED+((Shoes)uitem).getMovementSpeed();
+            if (uitem instanceof Shoes) {
+                return DEFAULT_PLAYER_MOVEMENT_SPEED + ((Shoes) uitem).getMovementSpeed();
             }
         }
         return DEFAULT_PLAYER_MOVEMENT_SPEED;
     }
+
     /**
      * 攻击者伤害处理(虚弱等负面状态削弱攻击)
      *
