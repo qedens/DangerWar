@@ -1,7 +1,7 @@
 package cc.zoyn.wastelandwarcore.listener;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.module.item.Wand;
+import cc.zoyn.wastelandwarcore.module.item.wand.Wand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

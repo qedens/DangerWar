@@ -15,21 +15,21 @@ public class SpecialEffectPlayer {
     /**
      * 玩家的效果合集
      */
-    private Map<SpecialEffectType,SpecialEffectPlayerValue> effects = Maps.newHashMap();
+    private Map<SpecialEffectType, SpecialEffectPlayerValue> effects = Maps.newHashMap();
 
     public void addSpecialEffect(SpecialEffect effect) {
-        effects.put(effect.getType(),new SpecialEffectPlayerValue(effect));
+        effects.put(effect.getType(), new SpecialEffectPlayerValue(effect));
     }
 
     public boolean hasSpecialEffect(SpecialEffectType type) {
-        if (!effects.containsKey(type))
-            return false;
-        return effects.get(type).getNowDuration() > 0;
+        return effects.containsKey(type) && effects.get(type).getNowDuration() > 0;
     }
+
     public void removeSpecialEffect(SpecialEffectType type) {
         if (effects.containsKey(type))
             effects.remove(type);
     }
+
     public SpecialEffect getSpecialEffect(SpecialEffectType type) {
         if (effects.containsKey(type))
             return effects.get(type);
@@ -67,7 +67,9 @@ public class SpecialEffectPlayer {
             return armor;
         return armor * 30 / (30 + armorValue);
     }
+
 }
+
 class SpecialEffectPlayerValue extends SpecialEffect {
     /**
      * 效果开始时间
@@ -82,16 +84,18 @@ class SpecialEffectPlayerValue extends SpecialEffect {
     private long nowDuration;
 
     public SpecialEffectPlayerValue(SpecialEffect effect) {
-        super(effect.getType(),effect.getDuration(),effect.getLevel());
+        super(effect.getType(), effect.getDuration(), effect.getLevel());
         startDuration = System.currentTimeMillis();
         nowDuration = System.currentTimeMillis();
     }
+
     /**
      * 获取剩余的时间
+     *
      * @return 剩余的时间
      */
     public long getRestDuration() {
-        long rest = startDuration+getDuration()-nowDuration;
-        return rest>0 ? rest : 0;
+        long rest = startDuration + getDuration() - nowDuration;
+        return rest > 0 ? rest : 0;
     }
 }

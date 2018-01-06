@@ -10,6 +10,7 @@ import cc.zoyn.wastelandwarcore.module.item.IWeapon;
 import cc.zoyn.wastelandwarcore.util.ItemStackUtils;
 import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -26,11 +27,11 @@ public class EntityDamageByEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onDamage(EntityDamageByEntityEvent event) {
-        //如果 攻击者 和 被攻击者皆属玩家 且是 盟友 攻击将取消
-        if(event.getDamager() instanceof  Player && event.getEntity() instanceof Player &&
-                CoreAPI.isFriendly((Player)event.getDamager(),(Player)event.getEntity())) {
+        //如果攻击者和被攻击者皆属玩家且是盟友攻击将取消
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player &&
+                CoreAPI.isFriendly((Player) event.getDamager(), (Player) event.getEntity())) {
             event.setCancelled(true);
-            return ;
+            return;
         }
         UserManager manager = UserManager.getInstance();
         //被攻击者是玩家
@@ -50,30 +51,36 @@ public class EntityDamageByEntityListener implements Listener {
             User user = manager.getUserByName(damager.getName());
             //攻击者身上的效果
             SpecialEffectPlayer effectPlayer = user.getEffects();
-            if (effectPlayer != null){
+            if (effectPlayer != null) {
                 //虚弱削弱伤害
                 event.setDamage(PlayerUtils.getDamagerDamage(effectPlayer, damager, event.getDamage()));
             }
 
             //如果被攻击者是玩家,将施加效果至目标
-            if(event.getEntity() instanceof Player) {
-                User BeDamager = manager.getUserByName(((Player)event.getEntity()).getName());
+            if (event.getEntity() instanceof Player) {
+                User BeDamager = manager.getUserByName(event.getEntity().getName());
                 SpecialEffectPlayer BeEffectPlayer = user.getEffects();
                 ItemStack weaponItem = damager.getInventory().getItemInMainHand();
-                if(ItemStackUtils.itemHasDisplayName(weaponItem)) {
-                    IWeapon weapon = (IWeapon)ItemManager.getInstance().getItemByName(weaponItem.getItemMeta().getDisplayName());
+                if (ItemStackUtils.itemHasDisplayName(weaponItem)) {
+                    IWeapon weapon = (IWeapon) ItemManager.getInstance().getItemByName(weaponItem.getItemMeta().getDisplayName());
                     for (SpecialEffect itemEffect : weapon.getEffects()) {
-                        if(BeEffectPlayer.hasSpecialEffect(itemEffect.getType())) {
+                        if (BeEffectPlayer.hasSpecialEffect(itemEffect.getType())) {
                             SpecialEffect playerEffect = BeEffectPlayer.getSpecialEffect(itemEffect.getType());
-                            if(itemEffect.getLevel() > playerEffect.getLevel()) {
+                            if (itemEffect.getLevel() > playerEffect.getLevel()) {
                                 BeEffectPlayer.addSpecialEffect(itemEffect);
                             }
-                        }
-                        else
+                        } else
                             BeEffectPlayer.addSpecialEffect(itemEffect);
                     }
                 }
             }
+        }
+
+        // 以下考虑抛射物命中
+        if (event.getDamager() instanceof Projectile) {
+            Projectile projectile = (Projectile) event.getDamager();
+//            Wand wand = new Wand(null, 0, 1, null, null, 0, AttributeType.POISON);
+//            wand.getAttribute().getSpecialAttribute().getConsumer().accept(攻击的人, 被攻击的人);
         }
     }
 }

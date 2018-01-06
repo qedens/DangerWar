@@ -1,6 +1,7 @@
 package cc.zoyn.wastelandwarcore.module.item;
 
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
+import cc.zoyn.wastelandwarcore.module.item.wand.AttributeType;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;

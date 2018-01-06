@@ -85,8 +85,8 @@ public final class PlayerUtils {
         double armor = getArmor(player);
         double resistance = 0;
         //破甲效果 削弱护甲
-        if (effects.hasSpecialEffect(SpecialEffectType.ARMORBREAK)) {
-            SpecialEffect effect = effects.getSpecialEffect(SpecialEffectType.ARMORBREAK);
+        if (effects.hasSpecialEffect(SpecialEffectType.ARMOR_BREAK)) {
+            SpecialEffect effect = effects.getSpecialEffect(SpecialEffectType.ARMOR_BREAK);
             armor = SpecialEffectPlayer.getArmorBreak(effect.getLevel(), armor, resistance);
         }
         return damage * 30 / (30 + armor);

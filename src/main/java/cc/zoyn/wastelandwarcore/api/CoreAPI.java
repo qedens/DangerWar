@@ -5,9 +5,11 @@ import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.util.ActionBarUtils;
 import cc.zoyn.wastelandwarcore.util.TitleUtils;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.block.Beacon;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * 核心API
@@ -112,6 +114,23 @@ public class CoreAPI {
      */
     public static String getTownOwnerName(String townName) {
         return getTownOwnerName(getTownManager().getTownByName(townName));
+    }
+
+    /**
+     * 创建一个城镇对象
+     *
+     * @param name          城镇名
+     * @param level         城镇等级
+     * @param owner         城镇盟主
+     * @param members       城镇成员
+     * @param residenceName 城镇领地名
+     * @param centerBeacon  中心信标
+     * @return {@link Town}
+     */
+    public static Town createTown(String name, int level, String owner, List<String> members, String residenceName, Beacon centerBeacon) {
+        Town town = new Town(name, level, owner, members, residenceName, centerBeacon);
+        getTownManager().addElement(town);
+        return town;
     }
 
 }

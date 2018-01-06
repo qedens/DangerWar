@@ -66,6 +66,30 @@ public class Town implements ConfigurationSerializable {
      */
     private AtomicDouble eternalGoldMagicMatter = new AtomicDouble(0D);
 
+    public Town(String name, int level, String owner, List<String> members, String residence, Beacon centerBeacon) {
+        this.name = name;
+        this.level = level;
+        this.owner = owner;
+        this.members = members;
+        this.residence = residence;
+        this.centerBeacon = centerBeacon;
+    }
+
+    public Town(String name, int level, String owner, List<String> members, String residence, Beacon centerBeacon, double ghostCrystal, double arcaneCrystal, double holyCrystal, double darkSteelMagicMatter, double mithrilMagicMatter, double eternalGoldMagicMatter) {
+        this.name = name;
+        this.level = level;
+        this.owner = owner;
+        this.members = members;
+        this.residence = residence;
+        this.centerBeacon = centerBeacon;
+        this.ghostCrystal = new AtomicDouble(ghostCrystal);
+        this.arcaneCrystal = new AtomicDouble(arcaneCrystal);
+        this.holyCrystal = new AtomicDouble(holyCrystal);
+        this.darkSteelMagicMatter = new AtomicDouble(darkSteelMagicMatter);
+        this.mithrilMagicMatter = new AtomicDouble(mithrilMagicMatter);
+        this.eternalGoldMagicMatter = new AtomicDouble(eternalGoldMagicMatter);
+    }
+
     public void setResidence(String residenceName) {
         this.residence = residenceName;
     }
