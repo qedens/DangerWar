@@ -106,7 +106,6 @@
                                     <exclude>org.spigotmc</exclude>
                                     <exclude>com.comphenix.protocol</exclude>
                                     <exclude>com.comphenix.executors</exclude>
-                                    <exclude>org.apache.commons</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>
