@@ -62,11 +62,13 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.3.0</version>
         </dependency>
-        <!--commons-lang3-->
+        <!--residence-->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.7</version>
+            <groupId>com.bekvon.bukkit.residence</groupId>
+            <artifactId>Residence</artifactId>
+            <version>4.7.3.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/Residence4.7.3.1.jar</systemPath>
         </dependency>
     </dependencies>
 

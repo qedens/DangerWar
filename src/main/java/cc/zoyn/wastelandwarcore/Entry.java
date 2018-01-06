@@ -6,7 +6,6 @@ import cc.zoyn.wastelandwarcore.listener.*;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
-import cc.zoyn.wastelandwarcore.module.town.Region;
 import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.runnable.SpecialEffectRunnable;
 import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
@@ -47,7 +46,6 @@ public class Entry extends JavaPlugin {
         createFiles();
 
         // 注册序列化
-        ConfigurationSerialization.registerClass(Region.class);
         ConfigurationSerialization.registerClass(Town.class);
         ConfigurationSerialization.registerClass(User.class);
 
