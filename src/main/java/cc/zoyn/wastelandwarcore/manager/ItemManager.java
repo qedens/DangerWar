@@ -3,8 +3,10 @@ package cc.zoyn.wastelandwarcore.manager;
 import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
 import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
+import cc.zoyn.wastelandwarcore.util.ItemStackUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.List;
@@ -37,6 +39,14 @@ public class ItemManager extends AbstractManager<UniversalItem> implements Savab
             }
         }
         return instance;
+    }
+
+    public boolean isSpecificItem(ItemStack itemStack, Class<? extends UniversalItem> clazz) {
+        if (ItemStackUtils.itemHasDisplayName(itemStack)) {
+            UniversalItem item = getItemByName(itemStack.getItemMeta().getDisplayName());
+            return item.getClass().getName().equals(clazz.getName());
+        }
+        return false;
     }
 
     /**

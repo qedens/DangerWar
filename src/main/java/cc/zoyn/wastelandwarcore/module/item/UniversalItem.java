@@ -28,4 +28,5 @@ public interface UniversalItem extends ConfigurationSerializable {
         }
         return itemStack;
     }
+
 }

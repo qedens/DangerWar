@@ -11,7 +11,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -71,6 +73,17 @@ public class User implements ConfigurationSerializable {
     @Setter
     private SpecialEffectPlayer effects;
 
+    /**
+     * 获取该用户的 Player 对象
+     * <p>
+     * 如果该用户不在线会返回 null
+     *
+     * @return {@link Player}
+     */
+    public Player getPlayer() {
+        return Bukkit.getPlayer(name);
+    }
+
     public Channel getChannel() {
         return CoreAPI.getChannelManager().getChannelByName(channel);
     }
@@ -101,10 +114,10 @@ public class User implements ConfigurationSerializable {
         map.put("channel", channel);
         map.put("town", town);
         map.put("talent", talent);
-        map.put("armor",armor);
-        map.put("resistance",resistance);
-        map.put("moveSpeed",moveSpeed);
-        map.put("effects",effects);
+        map.put("armor", armor);
+        map.put("resistance", resistance);
+        map.put("moveSpeed", moveSpeed);
+        map.put("effects", effects);
         return map;
     }
 }

@@ -23,19 +23,19 @@ public class CommandHandler implements CommandExecutor {
     private final static Map<String, SubCommand> commandMap = Maps.newHashMap();
 
     public CommandHandler() {
-        registerCommand("help", new HelpCommand());
-        registerCommand("save", new SaveCommand());
-        registerCommand("whois", new WhoisCommand());
+        registerSubCommand("help", new HelpCommand());
+        registerSubCommand("save", new SaveCommand());
+        registerSubCommand("whois", new WhoisCommand());
     }
 
-    public void registerCommand(String commandName, SubCommand subCommand) {
+    public void registerSubCommand(String commandName, SubCommand subCommand) {
         if (commandMap.containsKey(commandName)) {
             Bukkit.getLogger().warning("duplicate add command!");
         }
         commandMap.put(commandName, subCommand);
     }
 
-    public void unregisterCommand(String commandName) {
+    public void unregisterSubCommand(String commandName) {
         if (commandMap.containsKey(commandName)) {
             commandMap.remove(commandName);
         }

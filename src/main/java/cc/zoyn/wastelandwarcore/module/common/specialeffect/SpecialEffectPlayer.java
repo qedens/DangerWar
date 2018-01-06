@@ -13,21 +13,21 @@ public class SpecialEffectPlayer {
     /**
      * 玩家的效果合集
      */
-    private Map<SpecialEffectType,SpecialEffectPlayerValue> effects = Maps.newHashMap();
+    private Map<SpecialEffectType, SpecialEffectPlayerValue> effects = Maps.newHashMap();
 
     public void addSpecialEffect(SpecialEffect effect) {
-        effects.put(effect.getType(),new SpecialEffectPlayerValue(effect));
+        effects.put(effect.getType(), new SpecialEffectPlayerValue(effect));
     }
 
     public boolean hasSpecialEffect(SpecialEffectType type) {
-        if (!effects.containsKey(type))
-            return false;
-        return effects.get(type).getNowDuration() > 0;
+        return effects.containsKey(type) && effects.get(type).getNowDuration() > 0;
     }
+
     public void removeSpecialEffect(SpecialEffectType type) {
         if (effects.containsKey(type))
             effects.remove(type);
     }
+
     public SpecialEffect getSpecialEffect(SpecialEffectType type) {
         if (effects.containsKey(type))
             return effects.get(type);
@@ -65,4 +65,5 @@ public class SpecialEffectPlayer {
             return armor;
         return armor * 30 / (30 + armorValue);
     }
+
 }

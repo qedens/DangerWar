@@ -1,6 +1,7 @@
-package cc.zoyn.wastelandwarcore.module.item;
+package cc.zoyn.wastelandwarcore.module.item.wand;
 
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
+import cc.zoyn.wastelandwarcore.module.item.IWeapon;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,10 +31,10 @@ public class Wand implements IWeapon {
     private List<SpecialEffect> effects;
     private double damage;
     private AttributeType attribute;
+
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = Maps.newHashMap();
-
         map.put("material", this.material.toString());
         map.put("subId", this.subId);
         map.put("amount", this.amount);

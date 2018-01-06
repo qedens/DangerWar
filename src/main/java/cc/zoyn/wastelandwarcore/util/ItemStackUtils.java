@@ -96,4 +96,14 @@ public final class ItemStackUtils {
         return setItemLore(itemStack, translate, Arrays.asList(lore));
     }
 
+    /**
+     * 判断一个物品有无 lore
+     *
+     * @param itemStack 物品
+     * @return true就是有, false就没有
+     */
+    public static boolean itemHasLore(@Nullable ItemStack itemStack) {
+        return itemStack != null && itemStack.getItemMeta() != null && itemStack.getItemMeta().hasLore();
+    }
+
 }

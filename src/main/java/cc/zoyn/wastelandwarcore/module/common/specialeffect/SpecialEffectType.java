@@ -6,5 +6,5 @@ package cc.zoyn.wastelandwarcore.module.common.specialeffect;
  * @author DFKK
  */
 public enum SpecialEffectType {
-    POISON, HUNGER, SLOW, WEAKNESS, ARMORBREAK;
+    POISON, HUNGER, SLOW, WEAKNESS, ARMOR_BREAK
 }
