@@ -69,6 +69,7 @@ public class Entry extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new AsyncPlayerChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TeleportInterruptListener(), this);
 
         // 注册命令
         Bukkit.getPluginCommand("core").setExecutor(new CommandHandler());
