@@ -1,9 +1,12 @@
 package cc.zoyn.wastelandwarcore.module.town;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.comphenix.executors.BukkitExecutors;
+import com.comphenix.executors.BukkitScheduledExecutorService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -18,7 +21,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 表示一个城镇
@@ -39,7 +43,38 @@ public class Town implements ConfigurationSerializable {
 
     private Beacon centerBeacon;
     private boolean fighting = false;
-    private Timer resourceOutput = new Timer("resourceOutputTimer");
+    // 这里试试用 ProtocolLib 的计划任务
+    private static BukkitScheduledExecutorService scheduledExecutorService = BukkitExecutors.newAsynchronous(Entry.getInstance());
+
+    // 初始化块
+    {
+        scheduledExecutorService.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // 和平时期
+                if (!isFighting()) {
+                    if (ghostCrystal.get() < 10) {
+                        ghostCrystal.addAndGet(1);
+                    }
+                    if (arcaneCrystal.get() < 10) {
+                        arcaneCrystal.addAndGet(1);
+                    }
+                    if (holyCrystal.get() < 10) {
+                        holyCrystal.addAndGet(1);
+                    }
+                    if (darkSteelMagicMatter.get() < 10) {
+                        darkSteelMagicMatter.addAndGet(1);
+                    }
+                    if (mithrilMagicMatter.get() < 10) {
+                        mithrilMagicMatter.addAndGet(1);
+                    }
+                    if (eternalGoldMagicMatter.get() < 10) {
+                        eternalGoldMagicMatter.addAndGet(1);
+                    }
+                }
+            }
+        }, 1, TimeUnit.HOURS);
+    }
 
     /**
      * 魂晶
