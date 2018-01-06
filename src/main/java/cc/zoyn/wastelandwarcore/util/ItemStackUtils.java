@@ -21,6 +21,29 @@ public final class ItemStackUtils {
     // 防止意外操作
     private ItemStackUtils() {
     }
+    
+    /**
+     * 判断一个物品有无 displayName
+     *
+     * @param itemStack 物品
+     * @return true就是有, false就没有
+     */
+    public static boolean itemHasDisplayName(@Nullable ItemStack itemStack) {
+        return itemStack != null && itemStack.getItemMeta() != null && itemStack.getItemMeta().hasDisplayName();
+    }
+    
+    /**
+     * 获取一个物品的展示名
+     * 调用本方法前应先调用itemHasDisplayName方法进行检查
+     *
+     * @param itemStack 物品
+     * @return 物品的展示名
+     */
+    public static String getItemDisplayName(@Nullable ItemStack itemStack) {
+    	Validate.notNull(itemStack);
+    	
+    	return itemStack.getItemMeta().getDisplayName();
+    }
 
     /**
      * 给一个物品设置展示名
@@ -28,11 +51,11 @@ public final class ItemStackUtils {
      * @param itemStack   物品
      * @param displayName 展示名
      */
-    public static void setItemDisplayName(@Nullable ItemStack itemStack, @Nullable String displayName) {
+    public static ItemStack setItemDisplayName(@Nullable ItemStack itemStack, @Nullable String displayName) {
         Validate.notNull(itemStack);
 
         if (displayName == null || displayName.isEmpty() || displayName.equalsIgnoreCase(" ")) {
-            return;
+            return itemStack;
         }
 
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -40,6 +63,7 @@ public final class ItemStackUtils {
         itemMeta.setDisplayName(translatedDisplayName);
 
         itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     /**
@@ -49,7 +73,7 @@ public final class ItemStackUtils {
      * @param lore      Lore展示信息
      * @param translate 是否翻译颜色代码
      */
-    public static void setItemLore(@Nullable ItemStack itemStack, boolean translate, @Nullable List<String> lore) {
+    public static ItemStack setItemLore(@Nullable ItemStack itemStack, boolean translate, @Nullable List<String> lore) {
         Validate.notNull(itemStack);
         Validate.notNull(lore);
 
@@ -65,20 +89,11 @@ public final class ItemStackUtils {
         }
 
         itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
-    public void setItemLore(ItemStack itemStack, boolean translate, String... lore) {
-        setItemLore(itemStack, translate, Arrays.asList(lore));
-    }
-
-    /**
-     * 判断一个物品有无 displayName
-     *
-     * @param itemStack 物品
-     * @return true就是有, false就没有
-     */
-    public static boolean itemHasDisplayName(@Nullable ItemStack itemStack) {
-        return itemStack != null && itemStack.getItemMeta() != null && itemStack.getItemMeta().hasDisplayName();
+    public ItemStack setItemLore(ItemStack itemStack, boolean translate, String... lore) {
+        return setItemLore(itemStack, translate, Arrays.asList(lore));
     }
 
 }
