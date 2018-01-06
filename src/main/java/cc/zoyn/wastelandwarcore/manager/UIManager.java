@@ -41,7 +41,7 @@ public class UIManager extends AbstractManager<UI> {
      */
     public UI getUIByName(String uiName) {
         for (UI ui : getList()) {
-            if (ui.getInventory().getTitle().equals(uiName)) {
+            if (ui.getTitle().equals(uiName)) {
                 return ui;
             }
         }
