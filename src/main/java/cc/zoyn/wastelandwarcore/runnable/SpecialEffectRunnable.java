@@ -20,7 +20,7 @@ public class SpecialEffectRunnable extends BukkitRunnable {
             if (effectPlayer != null) {
                 //中毒减血计算
                 if (effectPlayer.hasSpecialEffect(SpecialEffectType.POISON)) {
-                    Damageable d = (Damageable) player;
+                    Damageable d = player;
                     double heal = d.getHealth();
                     heal = heal-SpecialEffectPlayer.getPoisoningHealth(
                             effectPlayer.getSpecialEffect(SpecialEffectType.POISON).getLevel());

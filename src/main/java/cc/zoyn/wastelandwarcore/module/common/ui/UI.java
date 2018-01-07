@@ -29,10 +29,11 @@ public class UI implements Listener {
     @Getter
     private boolean allowOperation;
 
-    private UI(Inventory inventory) {
+    private UI(Inventory inventory, boolean allowOperation) {
         Validate.notNull(inventory);
 
         this.inventory = inventory;
+        this.allowOperation = allowOperation;
     }
 
     public static UIBuilder builder() {
@@ -42,7 +43,7 @@ public class UI implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getInventory().equals(inventory)) {
-            UIClickEvent uEvent = new UIClickEvent(this);
+            UIClickEvent uEvent = new UIClickEvent(this, event);
             Bukkit.getPluginManager().callEvent(uEvent);
 
             if (!isAllowOperation()) {
@@ -54,7 +55,7 @@ public class UI implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (event.getInventory().equals(inventory)) {
-            Bukkit.getPluginManager().callEvent(new UICloseEvent(this));
+            Bukkit.getPluginManager().callEvent(new UICloseEvent(this, event));
         }
     }
 
@@ -72,24 +73,29 @@ public class UI implements Listener {
             player.closeInventory();
         }
     }
+    
+    public String getTitle() {
+    	return inventory.getTitle();
+    }
 
     public UI setItem(int index, ItemStack item) {
         inventory.setItem(--index, Validate.notNull(item));
         return this;
     }
 
-    private UI registerEvents() {
+    public UI registerEvents() {
         Bukkit.getPluginManager().registerEvents(this, Entry.getInstance());
         return this;
     }
 
-    private UI unregisterEvents() {
+    public UI unregisterEvents() {
         HandlerList.unregisterAll(this);
         return this;
     }
 
     public static class UIBuilder {
         private Inventory inventory;
+        private boolean allowOperation;
 
         private UIBuilder() {
         }
@@ -108,9 +114,14 @@ public class UI implements Listener {
             inventory.setItem(--index, Validate.notNull(itemStack));
             return this;
         }
+        
+        public UIBuilder allowOperation(boolean allowOperation) {
+        	this.allowOperation = allowOperation;
+        	return this;
+        }
 
         public UI build() {
-            return new UI(inventory);
+            return new UI(inventory, allowOperation);
         }
     }
 }

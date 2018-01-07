@@ -4,6 +4,7 @@ import cc.zoyn.wastelandwarcore.module.common.ui.UI;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 /**
  * 当UI被关闭时触发此事件
@@ -15,11 +16,14 @@ public class UICloseEvent extends Event {
 
     @Getter
     private final UI ui;
+    @Getter
+    private final InventoryCloseEvent invEvent;
 
     private static final HandlerList handlers = new HandlerList();
 
-    public UICloseEvent(UI ui) {
+    public UICloseEvent(UI ui, InventoryCloseEvent invEvent) {
         this.ui = ui;
+        this.invEvent = invEvent;
     }
 
     @Override

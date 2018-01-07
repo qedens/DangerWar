@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 /**
  * 当UI被点击时触发此事件
@@ -16,12 +17,15 @@ public class UIClickEvent extends Event implements Cancellable {
 
     @Getter
     private final UI ui;
+    @Getter
+    private final InventoryClickEvent invEvent;
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
 
-    public UIClickEvent(UI ui) {
+    public UIClickEvent(UI ui, InventoryClickEvent invEvent) {
         this.ui = ui;
+        this.invEvent = invEvent;
     }
 
     @Override

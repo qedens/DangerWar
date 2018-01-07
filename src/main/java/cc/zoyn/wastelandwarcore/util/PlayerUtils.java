@@ -1,5 +1,6 @@
 package cc.zoyn.wastelandwarcore.util;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.manager.ItemManager;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
@@ -8,11 +9,21 @@ import cc.zoyn.wastelandwarcore.module.item.ChestPlate;
 import cc.zoyn.wastelandwarcore.module.item.IArmor;
 import cc.zoyn.wastelandwarcore.module.item.Shoes;
 import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
+import lombok.Getter;
+
+import org.apache.commons.lang.Validate;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import static cc.zoyn.wastelandwarcore.util.ItemStackUtils.itemHasDisplayName;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public final class PlayerUtils {
     /**
@@ -23,6 +34,10 @@ public final class PlayerUtils {
      * 默认玩家最大血量上限
      */
     private static final double DEFAULT_PLAYER_MAX_HEALTH = 20.0;
+    /**
+     * 延迟传送线程列表
+     */
+    private static List<PlayerTeleportRunnable> delayedTeleportList = new ArrayList<>();
 
     // 防止意外构造
     private PlayerUtils() {
@@ -148,5 +163,77 @@ public final class PlayerUtils {
                 return ((IArmor) item).getResistance();
         }
         return 0;
+    }
+    
+    /**
+     * 延迟传送
+     *
+     * @param player 玩家
+     * @param location 位置
+     * @param delay 延迟（Ticks）
+     */
+    public static void delayedTeleport(Player player, Location location, long delay) {
+    	new PlayerTeleportRunnable(player, location).runTaskLater(Entry.getInstance(), delay);
+    }
+    
+    /**
+     * 取消延迟传送
+     *
+     * @param player 玩家
+     */
+    public static void cancelDelayedTeleport(Player player) {
+    	cancelDelayedTeleport(player, null);
+    }
+    
+    /**
+     * 取消延迟传送
+     *
+     * @param player 玩家
+     * @param message 发送给玩家的提示
+     */
+    public static void cancelDelayedTeleport(Player player, String message) {
+    	//取消成功标志位
+    	boolean canceled = false;
+    	//找出列表中该玩家的所有延迟传送线程并取消
+    	for (Iterator<PlayerTeleportRunnable> iterator = delayedTeleportList.iterator(); iterator.hasNext();) {
+    		PlayerTeleportRunnable run = iterator.next();
+    		if (run.getPlayer().getName().equals(player.getName())) {
+    			run.cancel();
+    			iterator.remove();
+    			canceled = true;
+    		}
+    	}
+    	//取消成功且提示不为空
+    	if (canceled && message != null && !message.equals("")) {
+    		player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+    	}
+    }
+    
+    /**
+     * 延迟传送线程
+     * 
+     * @author hammer354
+     * @since 2018-01-06
+     */
+    private static class PlayerTeleportRunnable extends BukkitRunnable {
+    	@Getter
+		private Player player;
+    	private Location location;
+		
+		private PlayerTeleportRunnable(Player player, Location location) {
+			Validate.notNull(player);
+	    	Validate.notNull(location);
+	    	
+	    	this.player = player;
+	    	this.location = location;
+			delayedTeleportList.add(this);
+		}
+		
+		@Override
+		public void run() {
+			player.sendMessage("正在传送...");
+			player.teleport(location);
+			delayedTeleportList.remove(this);
+		}
     }
 }
