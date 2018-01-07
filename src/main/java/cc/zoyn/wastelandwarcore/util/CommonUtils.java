@@ -8,10 +8,12 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
+ * 通用工具类
+ *
  * @author Zoyn
  * @since 2017-12-30
  */
-public final class BasicUtils {
+public final class CommonUtils {
 
     /**
      * 获取在线玩家集合

@@ -3,6 +3,7 @@ package cc.zoyn.wastelandwarcore.module.town;
 import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
+import cc.zoyn.wastelandwarcore.util.TimeUtils;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.comphenix.executors.BukkitExecutors;
@@ -144,6 +145,10 @@ public class Town implements ConfigurationSerializable {
      */
     public void fight(Town town) {
         Validate.notNull(town);
+
+        if (TimeUtils.isWeekDay()) {
+
+        }
 
         // 判断是否为相同城镇
         if (town.getName().equals(this.name)) {

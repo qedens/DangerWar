@@ -42,13 +42,23 @@ WastelandWarCore
 ├─ api 开放API
 │   ├─ event 事件API
 │
+├─ command 命令
+│   ├─ subcommand 子命令
+│
 ├─ listener 监听器
 │
 ├─ manager 管理层
 │
 ├─ module 模块
 │   ├─ common 公共模块
+│       ├─ chat 聊天模块
+│       ├─ mob 怪物模块
+│       ├─ specialeffect 特殊属性模块
+│       ├─ talent 天赋模块
+│       ├─ ui UI模块
+│       ├─ user 用户模块
 │   ├─ item 物品模块
+│       ├─ wand 法杖
 │   ├─ town 城镇模块
 │
 ├─ runnable 调度器
@@ -56,11 +66,6 @@ WastelandWarCore
 ├─ util 常用工具类
 │
 ```  
-
-## 分工 (实时变动)
-- Zoyn (莫老) : 框架制作
-- 老虎兔儿 : 内容填充
-- ...  
 
 ## 编译
 本项目使用 _Maven_ 管理, 在编译之前确保你有 _JDK8_ 与 _Maven_ 环境

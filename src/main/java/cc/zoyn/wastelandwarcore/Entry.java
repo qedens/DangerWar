@@ -10,9 +10,12 @@ import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.runnable.SpecialEffectRunnable;
 import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
 import cc.zoyn.wastelandwarcore.runnable.UserDataSaveRunnable;
+import cc.zoyn.wastelandwarcore.util.CommonUtils;
 import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +37,9 @@ public class Entry extends JavaPlugin {
     private File itemFolder;
     @Getter
     private File userFolder;
+    @Getter
+    @Setter
+    private Location shelterLocation;
 
     @Override
     public void onEnable() {
@@ -50,7 +56,7 @@ public class Entry extends JavaPlugin {
         ConfigurationSerialization.registerClass(User.class);
 
         // 缓存用户
-        for (Player player : getServer().getOnlinePlayers()) {
+        for (Player player : CommonUtils.getOnlinePlayers()) {
             Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
             Town town = CoreAPI.getTownManager().getTownByMember(player.getName());
             User user = new User(player.getName(), channel.getName(), town.getName(), null,
@@ -78,7 +84,7 @@ public class Entry extends JavaPlugin {
         UserDataSaveRunnable userRunnable = new UserDataSaveRunnable();
         SpecialEffectRunnable effectRunnable = new SpecialEffectRunnable();
 
-        effectRunnable.runTaskTimer(this, 20l, 20l);
+        effectRunnable.runTaskTimer(this, 20L, 20L);
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
     }
@@ -103,4 +109,5 @@ public class Entry extends JavaPlugin {
             userFolder.mkdirs();
         }
     }
+
 }
