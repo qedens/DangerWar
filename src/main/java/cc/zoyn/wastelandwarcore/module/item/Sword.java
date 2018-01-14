@@ -1,7 +1,6 @@
 package cc.zoyn.wastelandwarcore.module.item;
 
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
-import cc.zoyn.wastelandwarcore.module.item.wand.AttributeType;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +29,6 @@ public class Sword implements IWeapon {
 
     private List<SpecialEffect> effects;
     private double damage;
-    private AttributeType attribute;
 
     @Override
     public Map<String, Object> serialize() {
@@ -41,7 +39,6 @@ public class Sword implements IWeapon {
         map.put("itemMeta", this.itemMeta);
 
         map.put("damage", this.damage);
-        map.put("attributetype", this.attribute.toString());
         map.put("effects",effects);
         return map;
     }

@@ -30,7 +30,6 @@ public class Wand implements IWeapon {
 
     private List<SpecialEffect> effects;
     private double damage;
-    private AttributeType attribute;
 
     @Override
     public Map<String, Object> serialize() {
@@ -41,8 +40,7 @@ public class Wand implements IWeapon {
         map.put("itemMeta", this.itemMeta);
 
         map.put("damage", this.damage);
-        map.put("attributeType", this.attribute.toString());
-        map.put("effects",effects);
+        map.put("effect", effects);
         return map;
     }
 }

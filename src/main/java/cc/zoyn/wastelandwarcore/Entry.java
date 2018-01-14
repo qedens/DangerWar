@@ -67,6 +67,9 @@ public class Entry extends JavaPlugin {
             CoreAPI.getUserManager().addElement(user);
         }
 
+        // 读取武器数据
+        CoreAPI.getItemManager().loadItems();
+
         // 注册事件
         Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
@@ -78,6 +81,7 @@ public class Entry extends JavaPlugin {
 
         // 注册命令
         Bukkit.getPluginCommand("core").setExecutor(new CommandHandler());
+
 
         // 注册调度器
         TownDataSaveRunnable townRunnable = new TownDataSaveRunnable();
