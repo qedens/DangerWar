@@ -228,13 +228,12 @@ public class Town implements ConfigurationSerializable {
         town.setResidence((String) map.get("residence"));
         town.setFighting((boolean) map.getOrDefault("fighting", false));
         // 魂晶 魔质
-        town.setGhostCrystal((AtomicDouble) map.get("ghost-crystal"));
-        town.setArcaneCrystal((AtomicDouble) map.get("arcane-crystal"));
-        town.setHolyCrystal((AtomicDouble) map.get("holy-crystal"));
-        town.setDarkSteelMagicMatter((AtomicDouble) map.get("dark-steel-magic-matter"));
-        town.setMithrilMagicMatter((AtomicDouble) map.get("mithril-magic-matter"));
-        town.setEternalGoldMagicMatter((AtomicDouble) map.get("eternal-gold-magic-matter"));
-
+        town.setGhostCrystal(new AtomicDouble((double) map.get("ghost-crystal")));
+        town.setArcaneCrystal(new AtomicDouble((double) map.get("arcane-crystal")));
+        town.setHolyCrystal(new AtomicDouble((double) map.get("holy-crystal")));
+        town.setDarkSteelMagicMatter(new AtomicDouble((double) map.get("dark-steel-magic-matter")));
+        town.setMithrilMagicMatter(new AtomicDouble((double) map.get("mithril-magic-matter")));
+        town.setEternalGoldMagicMatter(new AtomicDouble((double) map.get("eternal-gold-magic-matter")));
         return town;
     }
 
@@ -248,12 +247,12 @@ public class Town implements ConfigurationSerializable {
         map.put("residence", residence);
         map.put("fighting", fighting);
 
-        map.put("ghost-crystal", ghostCrystal);
-        map.put("arcane-crystal", arcaneCrystal);
-        map.put("holy-crystal", holyCrystal);
-        map.put("dark-steel-magic-matter", darkSteelMagicMatter);
-        map.put("mithril-magic-matter", mithrilMagicMatter);
-        map.put("eternal-gold-magic-matter", eternalGoldMagicMatter);
+        map.put("ghost-crystal", ghostCrystal.get());
+        map.put("arcane-crystal", arcaneCrystal.get());
+        map.put("holy-crystal", holyCrystal.get());
+        map.put("dark-steel-magic-matter", darkSteelMagicMatter.get());
+        map.put("mithril-magic-matter", mithrilMagicMatter.get());
+        map.put("eternal-gold-magic-matter", eternalGoldMagicMatter.get());
         return map;
     }
 
