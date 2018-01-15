@@ -9,6 +9,7 @@ import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
 import cc.zoyn.wastelandwarcore.util.ItemStackUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +51,6 @@ public class ItemManager extends AbstractManager<UniversalItem> implements Savab
         return instance;
     }
 
-    @SuppressWarnings("all")
     public List<UniversalItem> loadItems() {
         // clear list
         getList().clear();
@@ -62,7 +62,7 @@ public class ItemManager extends AbstractManager<UniversalItem> implements Savab
                     ItemType type = ItemType.valueOf(fileConfiguration.getString("Item.ItemType"));
 
                     // 以下为共有属性
-                    int material = fileConfiguration.getInt("Item.ItemType");
+                    int material = fileConfiguration.getInt("Item.Material");
                     int data = fileConfiguration.getInt("Item.Data");
                     String displayName = fileConfiguration.getString("Item.DisplayName").replaceAll("&", "§");
                     List<String> lore = fileConfiguration.getStringList("Item.Lore")
@@ -106,34 +106,26 @@ public class ItemManager extends AbstractManager<UniversalItem> implements Savab
                         movementSpeed = Float.valueOf(fileConfiguration.getString("Item.MovementSpeed"));
                     }
 
-                    ItemStack itemStack = new ItemStack(Material.getMaterial(material), 1, (short) data);
-                    ItemMeta itemMeta = itemStack.getItemMeta();
+//                    ItemStack itemStack = new ItemStack(Material.getMaterial(material), 1, (short) data);
+                    ItemMeta itemMeta = Bukkit.getItemFactory().getItemMeta(Material.getMaterial(material));
                     itemMeta.setDisplayName(displayName);
                     itemMeta.setLore(lore);
 
+                    // 对象实例化
                     if (type.equals(ItemType.WAND)) {
-                        // 实例化对象
                         Wand wand = new Wand(Material.getMaterial(material), data, 1, itemMeta, effects, damage);
                         addElement(wand);
-                        return;
-                    }
-
-                    if (type.equals(ItemType.SWORD)) {
+                    } else if (type.equals(ItemType.SWORD)) {
                         Sword sword = new Sword(Material.getMaterial(material), data, 1, itemMeta, effects, damage);
                         addElement(sword);
-                        return;
-                    }
-
-                    if (type.equals(ItemType.CHEST_PLATE)) {
+                    } else if (type.equals(ItemType.CHEST_PLATE)) {
                         ChestPlate chestPlate = new ChestPlate(Material.getMaterial(material), data, 1, itemMeta, defense, health, resistance);
                         addElement(chestPlate);
-                        return;
-                    }
-
-                    if (type.equals(ItemType.SHOES)) {
+                    } else if (type.equals(ItemType.SHOES)) {
                         Shoes shoes = new Shoes(Material.getMaterial(material), data, 1, itemMeta, defense, movementSpeed, resistance);
                         addElement(shoes);
                     }
+                    Entry.getInstance().getLogger().info("读取武器 " + displayName + " 成功!");
                 });
         return getList();
     }
