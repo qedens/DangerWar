@@ -19,6 +19,7 @@ public class HelpCommand implements SubCommand {
         sender.sendMessage(" §b/core help §7查看帮助");
         sender.sendMessage(" §b/core whois user [用户名] §7查询该用户信息");
         sender.sendMessage(" §b/core whois town [城镇名] §7查询该城镇信息");
+        sender.sendMessage(" §b/core take [玩家] [数量] [名称] §7移除指定数量的指定物品");
         sender.sendMessage(" §b/core save §7保存所有数据");
     }
 }
