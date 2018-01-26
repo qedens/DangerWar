@@ -5,6 +5,8 @@ import cc.zoyn.wastelandwarcore.command.subcommand.SaveCommand;
 import cc.zoyn.wastelandwarcore.command.subcommand.WhoisCommand;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
 import me.skymc.wastelandwarcore.command.TakeItemCommand;
+import me.skymc.wastelandwarcore.command.UpgradeCommand;
+import me.skymc.wastelandwarcore.weaponlevel.WeaponLevelManager;
 
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -29,6 +31,7 @@ public class CommandHandler implements CommandExecutor {
         registerSubCommand("save", new SaveCommand());
         registerSubCommand("whois", new WhoisCommand());
         registerSubCommand("take", new TakeItemCommand());
+        registerSubCommand("upgrade", new UpgradeCommand());
     }
 
     public void registerSubCommand(String commandName, SubCommand subCommand) {
@@ -49,6 +52,11 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
             commandMap.get("help").execute(sender, args);
+            return true;
+        }
+        if (args[0].equalsIgnoreCase("reload")) {
+        	WeaponLevelManager.getInst().reloadPattern();
+        	sender.sendMessage("§7重载成功!");
             return true;
         }
         if (!commandMap.containsKey(args[0])) {

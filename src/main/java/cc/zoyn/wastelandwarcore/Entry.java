@@ -14,6 +14,8 @@ import cc.zoyn.wastelandwarcore.util.CommonUtils;
 import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
+import me.skymc.wastelandwarcore.weaponlevel.WeaponLevelManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -91,6 +93,9 @@ public class Entry extends JavaPlugin {
         effectRunnable.runTaskTimer(this, 20L, 20L);
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
+        
+        // 重载表达式
+        WeaponLevelManager.getInst().reloadPattern();
     }
 
     /**
