@@ -4,6 +4,8 @@ import cc.zoyn.wastelandwarcore.command.subcommand.HelpCommand;
 import cc.zoyn.wastelandwarcore.command.subcommand.SaveCommand;
 import cc.zoyn.wastelandwarcore.command.subcommand.WhoisCommand;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
+import me.skymc.wastelandwarcore.command.TakeItemCommand;
+
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,6 +28,7 @@ public class CommandHandler implements CommandExecutor {
         registerSubCommand("help", new HelpCommand());
         registerSubCommand("save", new SaveCommand());
         registerSubCommand("whois", new WhoisCommand());
+        registerSubCommand("take", new TakeItemCommand());
     }
 
     public void registerSubCommand(String commandName, SubCommand subCommand) {
