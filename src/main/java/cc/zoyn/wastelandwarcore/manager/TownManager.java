@@ -5,6 +5,7 @@ import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
                         1,
                         null,
                         Lists.newArrayList(),
+                        null,
                         null,
                         null,
                         0,
@@ -73,6 +75,21 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
         }
         return null;
     }
+    
+    /**
+     * 获取流民城镇对象
+     * <p>获取流民城镇对象,当获取不到时返回 null 值<p/>
+     *
+     * @return {@link Town}
+     */
+    public Town getRefugeeTown() {
+    	for (Town town : getList()) {
+    		if (town.getName().equals("流民")) {
+    			return town;
+    		}
+    	}
+    	return null;
+    }
 
     /**
      * 利用城镇成员名获取城镇, 若玩家不存在任何一个城镇则返回 流民
@@ -85,7 +102,21 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
                 .stream()
                 .filter(town -> town.getUserByMemberName(memberName) != null)
                 .findFirst()
-                .orElse(getTownByName("流民"));
+                .orElse(getRefugeeTown());
+    }
+    
+    /**
+     * 利用位置获取城镇, 若不存在任何一个城镇则返回Null
+     *
+     * @param location 位置
+     * @return {@link Town}
+     */
+    public Town getTownByLocation(Location location) {
+    	return getList()
+    			.stream()
+    			.filter(town -> town.isInside(location))
+    			.findFirst()
+    			.orElse(null);
     }
 
     @Override

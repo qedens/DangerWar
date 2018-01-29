@@ -16,6 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 表示一个用户
@@ -88,8 +89,15 @@ public class User implements ConfigurationSerializable {
         return CoreAPI.getChannelManager().getChannelByName(channel);
     }
 
+    /**
+     * 获取该用户所属的城镇对象
+     * <p>如果该用户没有所属势力会返回流民城镇对象</p>
+     *
+     * @return {@link Town}
+     */
     public Town getTown() {
-        return CoreAPI.getTownManager().getTownByName(town);
+        return Optional.ofNullable(CoreAPI.getTownManager().getTownByName(town))
+        		.orElse(CoreAPI.getTownManager().getRefugeeTown());
     }
 
     public static User deserialize(Map<String, Object> map) {

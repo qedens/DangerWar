@@ -1,6 +1,7 @@
 package cc.zoyn.wastelandwarcore.util;
 
 import cc.zoyn.wastelandwarcore.Entry;
+import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.manager.ItemManager;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
@@ -235,5 +236,25 @@ public final class PlayerUtils {
 			player.teleport(location);
 			delayedTeleportList.remove(this);
 		}
+    }
+    
+    /**
+     * 检查玩家是否为流民
+     *
+     * @param player 玩家
+     * @return true代表是/false代表不是
+     */
+    public static boolean isRefugee(Player player) {
+    	return CoreAPI.getUserManager().getUserByName(player.getName()).getTown().getName().equals("流民");
+    }
+    
+    /**
+     * 检查玩家是否为叛军
+     *
+     * @param player 玩家
+     * @return true代表是/false代表不是
+     */
+    public static boolean isRebel(Player player) {
+    	return CoreAPI.getUserManager().getUserByName(player.getName()).getTown().getName().startsWith("叛军");
     }
 }

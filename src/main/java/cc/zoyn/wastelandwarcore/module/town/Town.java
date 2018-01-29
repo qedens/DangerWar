@@ -16,7 +16,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Beacon;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
@@ -40,6 +42,7 @@ public class Town implements ConfigurationSerializable {
     private int level;
     private String owner;
     private List<String> members;
+    private String ally;
     private String residence;
 
     private Beacon centerBeacon;
@@ -102,20 +105,22 @@ public class Town implements ConfigurationSerializable {
      */
     private AtomicDouble eternalGoldMagicMatter = new AtomicDouble(0D);
 
-    public Town(String name, int level, String owner, List<String> members, String residence, Beacon centerBeacon) {
+    public Town(String name, int level, String owner, List<String> members, String ally, String residence, Beacon centerBeacon) {
         this.name = name;
         this.level = level;
         this.owner = owner;
         this.members = members;
+        this.ally = ally;
         this.residence = residence;
         this.centerBeacon = centerBeacon;
     }
 
-    public Town(String name, int level, String owner, List<String> members, String residence, Beacon centerBeacon, double ghostCrystal, double arcaneCrystal, double holyCrystal, double darkSteelMagicMatter, double mithrilMagicMatter, double eternalGoldMagicMatter) {
+    public Town(String name, int level, String owner, List<String> members, String ally, String residence, Beacon centerBeacon, double ghostCrystal, double arcaneCrystal, double holyCrystal, double darkSteelMagicMatter, double mithrilMagicMatter, double eternalGoldMagicMatter) {
         this.name = name;
         this.level = level;
         this.owner = owner;
         this.members = members;
+        this.ally = ally;
         this.residence = residence;
         this.centerBeacon = centerBeacon;
         this.ghostCrystal = new AtomicDouble(ghostCrystal);
@@ -124,6 +129,46 @@ public class Town implements ConfigurationSerializable {
         this.darkSteelMagicMatter = new AtomicDouble(darkSteelMagicMatter);
         this.mithrilMagicMatter = new AtomicDouble(mithrilMagicMatter);
         this.eternalGoldMagicMatter = new AtomicDouble(eternalGoldMagicMatter);
+    }
+    
+    /**
+     * 利用城镇名设置盟友
+     * <p>传入Null为解除盟约</p>
+     *
+     * @param townName 城镇名
+     */
+    private void setAllyByName(String townName) {
+    	ally = townName;
+    }
+    
+    /**
+     * 利用城镇对象设置盟友
+     * <p>传入Null为解除盟约</p>
+     *
+     * @param town 城镇对象
+     */
+    public void setAlly(Town town) {
+    	//解除原有盟约
+    	if (ally != null) {
+    		getAlly().setAllyByName(null);
+    	}
+    	//设置新盟友
+    	if (town != null) {
+    		ally = town.getName();
+    		town.setAllyByName(name);
+    	} else {
+    		ally = null;
+    	}
+    }
+    
+    /**
+     * 获取盟友对象
+     * <p>无盟友时返回Null</p>
+     *
+     * @return {@link Town}
+     */
+    public Town getAlly() {
+    	return CoreAPI.getTownManager().getTownByName(ally);
     }
 
     public void setResidence(String residenceName) {
@@ -136,6 +181,47 @@ public class Town implements ConfigurationSerializable {
 
     public ClaimedResidence getResidence() {
         return ResidenceApi.getResidenceManager().getByName(residence);
+    }
+    
+    /**
+     * 检查位置是否在城镇内
+     *
+     * @param location 位置
+     * @return true代表是/false代表不是
+     */
+    public boolean isInside(Location location) {
+    	Validate.notNull(location);
+    	
+    	ClaimedResidence res = getResidence();
+    	if (res != null) {
+    		return res.containsLoc(location);
+    	} else {
+    		return false;
+    	}
+    }
+    
+    /**
+     * 检查玩家是否在城镇内
+     *
+     * @param player 玩家
+     * @return true代表是/false代表不是
+     */
+    public boolean isInside(Player player) {
+    	Validate.notNull(player);
+    	
+    	return isInside(player.getLocation());
+    }
+    
+    /**
+     * 检查方块是否在城镇内
+     *
+     * @param block 方块
+     * @return true代表是/false代表不是
+     */
+    public boolean isInside(Block block) {
+    	Validate.notNull(block);
+    	
+    	return isInside(block.getLocation());
     }
 
     /**
@@ -215,6 +301,29 @@ public class Town implements ConfigurationSerializable {
                 .stream()
                 .anyMatch(s -> s.equals(playerName));
     }
+    
+    /**
+     * 判断一个玩家名是不是盟友
+     *
+     * @param playerName 玩家名
+     * @return true代表是/false代表不是
+     */
+    public boolean isAlly(String playerName) {
+    	if (ally == null) {
+    		return false;
+    	}
+    	return getAlly().isMember(playerName);
+    }
+    
+    /**
+     * 判断一个玩家名是否友好
+     *
+     * @param playerName 玩家名
+     * @return true代表是/false代表不是
+     */
+    public boolean isFriendly(String playerName) {
+    	return isMember(playerName) || isAlly(playerName);
+    }
 
     @SuppressWarnings("unchecked")
     public static Town deserialize(Map<String, Object> map) {
@@ -225,6 +334,7 @@ public class Town implements ConfigurationSerializable {
         town.setLevel((int) map.getOrDefault("level", 1));
         town.setOwner((String) map.getOrDefault("owner", "null"));
         town.setMembers((List<String>) map.get("members"));
+        town.setAllyByName((String) map.get("ally"));
         town.setResidence((String) map.get("residence"));
         town.setFighting((boolean) map.getOrDefault("fighting", false));
         // 魂晶 魔质
@@ -244,6 +354,7 @@ public class Town implements ConfigurationSerializable {
         map.put("level", level);
         map.put("owner", owner);
         map.put("members", members);
+        map.put("ally", ally);
         map.put("residence", residence);
         map.put("fighting", fighting);
 
