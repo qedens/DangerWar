@@ -2,7 +2,6 @@ package cc.zoyn.wastelandwarcore.command
 
 import cc.zoyn.wastelandwarcore.command.town.TownHelpCommand
 import cc.zoyn.wastelandwarcore.command.town.TownSetCommand
-import me.skymc.wastelandwarcore.weaponlevel.WeaponLevelManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
@@ -26,11 +25,6 @@ class TownCommandHandler : CommandHandler() {
         }
         if (args!!.isEmpty()) {
             commandMap["help"]?.execute(sender, args)
-            return true
-        }
-        if (args[0].equals("reload", ignoreCase = true)) {
-            WeaponLevelManager.getInst().reloadPattern()
-            sender.sendMessage("§7重载成功!")
             return true
         }
         if (!commandMap.containsKey(args[0])) {
