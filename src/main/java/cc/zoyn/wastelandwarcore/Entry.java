@@ -1,7 +1,8 @@
 package cc.zoyn.wastelandwarcore;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.command.CommandHandler;
+import cc.zoyn.wastelandwarcore.command.CoreCommandHandler;
+import cc.zoyn.wastelandwarcore.command.TownCommandHandler;
 import cc.zoyn.wastelandwarcore.listener.*;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
@@ -15,7 +16,6 @@ import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
 import me.skymc.wastelandwarcore.weaponlevel.WeaponLevelManager;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -83,7 +83,8 @@ public class Entry extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new WarListener(), this);
 
         // 注册命令
-        Bukkit.getPluginCommand("core").setExecutor(new CommandHandler());
+        Bukkit.getPluginCommand("core").setExecutor(new CoreCommandHandler());
+        Bukkit.getPluginCommand("town").setExecutor(new TownCommandHandler());
 
 
         // 注册调度器

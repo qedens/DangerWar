@@ -43,7 +43,8 @@ WastelandWarCore
 │   ├─ event 事件API
 │
 ├─ command 命令
-│   ├─ subcommand 子命令
+│   ├─ core 关于指令Core的子命令
+│   ├─ town 关于指令Town的子命令
 │
 ├─ listener 监听器
 │

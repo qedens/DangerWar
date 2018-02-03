@@ -46,6 +46,7 @@ public class Town implements ConfigurationSerializable {
     private String residence;
 
     private Beacon centerBeacon;
+    private Block centerEndBlock;
     private boolean fighting = false;
     // 这里试试用 ProtocolLib 的计划任务
     private static BukkitScheduledExecutorService scheduledExecutorService = BukkitExecutors.newAsynchronous(Entry.getInstance());

@@ -5,3 +5,5 @@ author: [Zoyn]
 depend: [Residence, ProtocolLib]
 commands:
   core:
+  town:
+    description: "该指令用于城镇管理"

@@ -1,18 +1,9 @@
 package cc.zoyn.wastelandwarcore.command;
 
-import cc.zoyn.wastelandwarcore.command.subcommand.HelpCommand;
-import cc.zoyn.wastelandwarcore.command.subcommand.SaveCommand;
-import cc.zoyn.wastelandwarcore.command.subcommand.WhoisCommand;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
-import me.skymc.wastelandwarcore.command.TakeItemCommand;
-import me.skymc.wastelandwarcore.command.UpgradeCommand;
-import me.skymc.wastelandwarcore.weaponlevel.WeaponLevelManager;
-
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
@@ -22,17 +13,9 @@ import java.util.Map;
  * @author Zoyn
  * @since 2017-12-16
  */
-public class CommandHandler implements CommandExecutor {
+public abstract class CommandHandler implements CommandExecutor {
 
     private final static Map<String, SubCommand> commandMap = Maps.newHashMap();
-
-    public CommandHandler() {
-        registerSubCommand("help", new HelpCommand());
-        registerSubCommand("save", new SaveCommand());
-        registerSubCommand("whois", new WhoisCommand());
-        registerSubCommand("take", new TakeItemCommand());
-        registerSubCommand("upgrade", new UpgradeCommand());
-    }
 
     public void registerSubCommand(String commandName, SubCommand subCommand) {
         if (commandMap.containsKey(commandName)) {
@@ -41,32 +24,7 @@ public class CommandHandler implements CommandExecutor {
         commandMap.put(commandName, subCommand);
     }
 
-    public void unregisterSubCommand(String commandName) {
-        if (commandMap.containsKey(commandName)) {
-            commandMap.remove(commandName);
-        }
-    }
-
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) {
-            commandMap.get("help").execute(sender, args);
-            return true;
-        }
-        if (args[0].equalsIgnoreCase("reload")) {
-        	WeaponLevelManager.getInst().reloadPattern();
-        	sender.sendMessage("§7重载成功!");
-            return true;
-        }
-        if (!commandMap.containsKey(args[0])) {
-            sender.sendMessage("§c未知命令!");
-            return true;
-        }
-
-        // args[0] ---> 子命令
-        SubCommand subCommand = commandMap.get(args[0]);
-        subCommand.execute(sender, args);
-        return true;
+    public Map<String, SubCommand> getCommandMap() {
+        return commandMap;
     }
 }
