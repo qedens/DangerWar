@@ -6,6 +6,7 @@ import cc.zoyn.wastelandwarcore.util.ActionBarUtils;
 import cc.zoyn.wastelandwarcore.util.TitleUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.block.Beacon;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -18,16 +19,16 @@ import java.util.List;
  * @since 2017-12-09
  */
 public class CoreAPI {
-	private static boolean inWar;
-	
-	/**
+    private static boolean inWar;
+
+    /**
      * 获取当前是否为战争状态
      *
      * @return true代表是/false代表不是
      */
-	public static boolean isInWar() {
-		return inWar;
-	}
+    public static boolean isInWar() {
+        return inWar;
+    }
 
     /**
      * 获取频道管理器的实例
@@ -129,17 +130,21 @@ public class CoreAPI {
     /**
      * 创建一个城镇对象
      *
-     * @param name          城镇名
-     * @param level         城镇等级
-     * @param owner         城镇盟主
-     * @param members       城镇成员
-     * @param ally          城镇盟友
-     * @param residenceName 城镇领地名
-     * @param centerBeacon  中心信标
+     * @param name            城镇名
+     * @param level           城镇等级
+     * @param owner           城镇盟主
+     * @param members         城镇成员
+     * @param ally            城镇盟友
+     * @param residences      城镇所有的领地名
+     * @param leftUpBeacon    左上核心
+     * @param rightUpBeacon   右上核心
+     * @param leftDownBeacon  左下核心
+     * @param rightDownBeacon 右下核心
+     * @param centerEndBlock  中心基底
      * @return {@link Town}
      */
-    public static Town createTown(String name, int level, String owner, List<String> members, String ally, String residenceName, Beacon centerBeacon) {
-        Town town = new Town(name, level, owner, members, ally, residenceName, centerBeacon);
+    public static Town createTown(String name, int level, String owner, List<String> members, String ally, List<String> residences, Beacon leftUpBeacon, Beacon rightUpBeacon, Beacon leftDownBeacon, Beacon rightDownBeacon, Block centerEndBlock) {
+        Town town = new Town(name, level, owner, members, ally, residences, leftUpBeacon, rightUpBeacon, leftDownBeacon, rightDownBeacon, centerEndBlock);
         getTownManager().addElement(town);
         return town;
     }

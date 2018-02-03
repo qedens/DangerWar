@@ -22,22 +22,7 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
     private static volatile TownManager instance;
 
     {
-        this.addElement(
-                new Town(
-                        "流民",
-                        1,
-                        null,
-                        Lists.newArrayList(),
-                        null,
-                        null,
-                        null,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0)
-        );
+        this.addElement(new Town("流民", 1, null, Lists.newArrayList(), null, Lists.newArrayList(), null, null, null, null, null));
     }
 
     // 防止意外实例化
@@ -75,7 +60,7 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
         }
         return null;
     }
-    
+
     /**
      * 获取流民城镇对象
      * <p>获取流民城镇对象,当获取不到时返回 null 值<p/>
@@ -83,12 +68,12 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
      * @return {@link Town}
      */
     public Town getRefugeeTown() {
-    	for (Town town : getList()) {
-    		if (town.getName().equals("流民")) {
-    			return town;
-    		}
-    	}
-    	return null;
+        for (Town town : getList()) {
+            if (town.getName().equals("流民")) {
+                return town;
+            }
+        }
+        return null;
     }
 
     /**
@@ -104,7 +89,7 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
                 .findFirst()
                 .orElse(getRefugeeTown());
     }
-    
+
     /**
      * 利用位置获取城镇, 若不存在任何一个城镇则返回Null
      *
@@ -112,11 +97,11 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
      * @return {@link Town}
      */
     public Town getTownByLocation(Location location) {
-    	return getList()
-    			.stream()
-    			.filter(town -> town.isInside(location))
-    			.findFirst()
-    			.orElse(null);
+        return getList()
+                .stream()
+                .filter(town -> town.isInside(location))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
