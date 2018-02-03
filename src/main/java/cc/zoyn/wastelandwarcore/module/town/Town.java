@@ -22,6 +22,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -43,9 +44,14 @@ public class Town implements ConfigurationSerializable {
     private String owner;
     private List<String> members;
     private String ally;
-    private String residence;
+    private List<String> residences;
 
-    private Beacon centerBeacon;
+    // 四个核心(信标)
+    private Beacon leftUpBeacon;
+    private Beacon rightUpBeacon;
+    private Beacon leftDownBeacon;
+    private Beacon rightDownBeacon;
+    // 基底
     private Block centerEndBlock;
     private boolean fighting = false;
     // 这里试试用 ProtocolLib 的计划任务
@@ -106,24 +112,33 @@ public class Town implements ConfigurationSerializable {
      */
     private AtomicDouble eternalGoldMagicMatter = new AtomicDouble(0D);
 
-    public Town(String name, int level, String owner, List<String> members, String ally, String residence, Beacon centerBeacon) {
+    public Town(String name, int level, String owner, List<String> members, String ally, List<String> residences, Beacon leftUpBeacon, Beacon rightUpBeacon, Beacon leftDownBeacon, Beacon rightDownBeacon, Block centerEndBlock) {
         this.name = name;
         this.level = level;
         this.owner = owner;
         this.members = members;
         this.ally = ally;
-        this.residence = residence;
-        this.centerBeacon = centerBeacon;
+        this.residences = residences;
+        this.leftUpBeacon = leftUpBeacon;
+        this.rightUpBeacon = rightUpBeacon;
+        this.leftDownBeacon = leftDownBeacon;
+        this.rightDownBeacon = rightDownBeacon;
+        this.centerEndBlock = centerEndBlock;
     }
 
-    public Town(String name, int level, String owner, List<String> members, String ally, String residence, Beacon centerBeacon, double ghostCrystal, double arcaneCrystal, double holyCrystal, double darkSteelMagicMatter, double mithrilMagicMatter, double eternalGoldMagicMatter) {
+    public Town(String name, int level, String owner, List<String> members, String ally, List<String> residences, Beacon leftUpBeacon, Beacon rightUpBeacon, Beacon leftDownBeacon, Beacon rightDownBeacon, Block centerEndBlock, boolean fighting, double ghostCrystal, double arcaneCrystal, double holyCrystal, double darkSteelMagicMatter, double mithrilMagicMatter, double eternalGoldMagicMatter) {
         this.name = name;
         this.level = level;
         this.owner = owner;
         this.members = members;
         this.ally = ally;
-        this.residence = residence;
-        this.centerBeacon = centerBeacon;
+        this.residences = residences;
+        this.leftUpBeacon = leftUpBeacon;
+        this.rightUpBeacon = rightUpBeacon;
+        this.leftDownBeacon = leftDownBeacon;
+        this.rightDownBeacon = rightDownBeacon;
+        this.centerEndBlock = centerEndBlock;
+        this.fighting = fighting;
         this.ghostCrystal = new AtomicDouble(ghostCrystal);
         this.arcaneCrystal = new AtomicDouble(arcaneCrystal);
         this.holyCrystal = new AtomicDouble(holyCrystal);
@@ -131,7 +146,7 @@ public class Town implements ConfigurationSerializable {
         this.mithrilMagicMatter = new AtomicDouble(mithrilMagicMatter);
         this.eternalGoldMagicMatter = new AtomicDouble(eternalGoldMagicMatter);
     }
-    
+
     /**
      * 利用城镇名设置盟友
      * <p>传入Null为解除盟约</p>
@@ -139,9 +154,9 @@ public class Town implements ConfigurationSerializable {
      * @param townName 城镇名
      */
     private void setAllyByName(String townName) {
-    	ally = townName;
+        ally = townName;
     }
-    
+
     /**
      * 利用城镇对象设置盟友
      * <p>传入Null为解除盟约</p>
@@ -149,19 +164,19 @@ public class Town implements ConfigurationSerializable {
      * @param town 城镇对象
      */
     public void setAlly(Town town) {
-    	//解除原有盟约
-    	if (ally != null) {
-    		getAlly().setAllyByName(null);
-    	}
-    	//设置新盟友
-    	if (town != null) {
-    		ally = town.getName();
-    		town.setAllyByName(name);
-    	} else {
-    		ally = null;
-    	}
+        //解除原有盟约
+        if (ally != null) {
+            getAlly().setAllyByName(null);
+        }
+        //设置新盟友
+        if (town != null) {
+            ally = town.getName();
+            town.setAllyByName(name);
+        } else {
+            ally = null;
+        }
     }
-    
+
     /**
      * 获取盟友对象
      * <p>无盟友时返回Null</p>
@@ -169,21 +184,27 @@ public class Town implements ConfigurationSerializable {
      * @return {@link Town}
      */
     public Town getAlly() {
-    	return CoreAPI.getTownManager().getTownByName(ally);
+        return CoreAPI.getTownManager().getTownByName(ally);
     }
 
-    public void setResidence(String residenceName) {
-        this.residence = residenceName;
+    public void setResidences(String... residenceName) {
+        this.residences.clear();
+        Collections.addAll(this.residences, residenceName);
     }
 
-    public void setResidence(ClaimedResidence residence) {
-        this.residence = Validate.notNull(residence).getName();
+    public void setResidences(List<ClaimedResidence> residences) {
+        this.residences.clear();
+        for (ClaimedResidence residence : residences) {
+            this.residences.add(residence.getName());
+        }
     }
 
-    public ClaimedResidence getResidence() {
-        return ResidenceApi.getResidenceManager().getByName(residence);
+    public List<ClaimedResidence> getResidences() {
+        List<ClaimedResidence> residences = Lists.newArrayList();
+        this.residences.forEach(s -> residences.add(ResidenceApi.getResidenceManager().getByName(s)));
+        return residences;
     }
-    
+
     /**
      * 检查位置是否在城镇内
      *
@@ -191,16 +212,19 @@ public class Town implements ConfigurationSerializable {
      * @return true代表是/false代表不是
      */
     public boolean isInside(Location location) {
-    	Validate.notNull(location);
-    	
-    	ClaimedResidence res = getResidence();
-    	if (res != null) {
-    		return res.containsLoc(location);
-    	} else {
-    		return false;
-    	}
+        Validate.notNull(location);
+
+        List<ClaimedResidence> residences = getResidences();
+        boolean isIn = false;
+        for (ClaimedResidence residence : residences) {
+            if (residence != null && residence.containsLoc(location)) {
+                isIn = true;
+                break;
+            }
+        }
+        return isIn;
     }
-    
+
     /**
      * 检查玩家是否在城镇内
      *
@@ -208,11 +232,11 @@ public class Town implements ConfigurationSerializable {
      * @return true代表是/false代表不是
      */
     public boolean isInside(Player player) {
-    	Validate.notNull(player);
-    	
-    	return isInside(player.getLocation());
+        Validate.notNull(player);
+
+        return isInside(player.getLocation());
     }
-    
+
     /**
      * 检查方块是否在城镇内
      *
@@ -220,9 +244,9 @@ public class Town implements ConfigurationSerializable {
      * @return true代表是/false代表不是
      */
     public boolean isInside(Block block) {
-    	Validate.notNull(block);
-    	
-    	return isInside(block.getLocation());
+        Validate.notNull(block);
+
+        return isInside(block.getLocation());
     }
 
     /**
@@ -302,7 +326,7 @@ public class Town implements ConfigurationSerializable {
                 .stream()
                 .anyMatch(s -> s.equals(playerName));
     }
-    
+
     /**
      * 判断一个玩家名是不是盟友
      *
@@ -310,12 +334,12 @@ public class Town implements ConfigurationSerializable {
      * @return true代表是/false代表不是
      */
     public boolean isAlly(String playerName) {
-    	if (ally == null) {
-    		return false;
-    	}
-    	return getAlly().isMember(playerName);
+        if (ally == null) {
+            return false;
+        }
+        return getAlly().isMember(playerName);
     }
-    
+
     /**
      * 判断一个玩家名是否友好
      *
@@ -323,7 +347,7 @@ public class Town implements ConfigurationSerializable {
      * @return true代表是/false代表不是
      */
     public boolean isFriendly(String playerName) {
-    	return isMember(playerName) || isAlly(playerName);
+        return isMember(playerName) || isAlly(playerName);
     }
 
     @SuppressWarnings("unchecked")
@@ -336,7 +360,7 @@ public class Town implements ConfigurationSerializable {
         town.setOwner((String) map.getOrDefault("owner", "null"));
         town.setMembers((List<String>) map.get("members"));
         town.setAllyByName((String) map.get("ally"));
-        town.setResidence((String) map.get("residence"));
+        town.setResidences((String[]) map.get("residences"));
         town.setFighting((boolean) map.getOrDefault("fighting", false));
         // 魂晶 魔质
         town.setGhostCrystal(new AtomicDouble((double) map.get("ghost-crystal")));
@@ -356,7 +380,7 @@ public class Town implements ConfigurationSerializable {
         map.put("owner", owner);
         map.put("members", members);
         map.put("ally", ally);
-        map.put("residence", residence);
+        map.put("residences", residences);
         map.put("fighting", fighting);
 
         map.put("ghost-crystal", ghostCrystal.get());
