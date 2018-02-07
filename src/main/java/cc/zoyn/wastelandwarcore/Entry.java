@@ -11,6 +11,7 @@ import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.runnable.SpecialEffectRunnable;
 import cc.zoyn.wastelandwarcore.runnable.TownDataSaveRunnable;
 import cc.zoyn.wastelandwarcore.runnable.UserDataSaveRunnable;
+import cc.zoyn.wastelandwarcore.runnable.WarDebuffRunnable;
 import cc.zoyn.wastelandwarcore.util.CommonUtils;
 import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import lombok.Getter;
@@ -91,10 +92,12 @@ public class Entry extends JavaPlugin {
         TownDataSaveRunnable townRunnable = new TownDataSaveRunnable();
         UserDataSaveRunnable userRunnable = new UserDataSaveRunnable();
         SpecialEffectRunnable effectRunnable = new SpecialEffectRunnable();
+        WarDebuffRunnable warDebuffRunnable = new WarDebuffRunnable();
 
         effectRunnable.runTaskTimer(this, 20L, 20L);
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
+        warDebuffRunnable.runTaskTimer(this, 20L, 3 * 20L);
         
         // 重载表达式
         WeaponLevelManager.getInst().reloadPattern();
