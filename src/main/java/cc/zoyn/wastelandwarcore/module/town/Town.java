@@ -151,13 +151,33 @@ public class Town implements ConfigurationSerializable {
     }
 
     /**
+     * 判断一个方块是否为该城镇的其中一个核心
+     *
+     * @param block 给定的方块
+     * @return 当是的时候返回该核心(信标)对象, 否则返回null
+     */
+    public Beacon isTownBeacon(Block block) {
+        if (leftUpBeacon.equals(block)) {
+            return leftUpBeacon;
+        } else if (rightUpBeacon.equals(block)) {
+            return rightUpBeacon;
+        } else if (leftDownBeacon.equals(block)) {
+            return leftDownBeacon;
+        } else if (rightDownBeacon.equals(block)) {
+            return rightDownBeacon;
+        }
+
+        return null;
+    }
+
+    /**
      * 修改信标上方玻璃的颜色.
      *
      * @param loc  信标的坐标
      * @param mode 模式
      */
     @SuppressWarnings("deprecation")
-    public static void updateBeaconMode(Location loc, BeaconMode mode) {
+    public void updateBeaconMode(Location loc, BeaconMode mode) {
         Block glass = loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY() + 1, loc.getBlockZ());
         switch (mode) {
             case NORMAL:

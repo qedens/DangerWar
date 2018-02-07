@@ -1,7 +1,9 @@
 package cc.zoyn.wastelandwarcore.listener;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
+import cc.zoyn.wastelandwarcore.module.town.BeaconMode;
 import cc.zoyn.wastelandwarcore.module.town.Town;
+import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -38,6 +40,11 @@ public class WarListener implements Listener {
         }
     }
 
+    /**
+     * 战争期间的方块破坏监听
+     *
+     * @param event 方块破坏事件
+     */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (!CoreAPI.isInWar()) {
@@ -45,6 +52,20 @@ public class WarListener implements Listener {
         }
         Block block = event.getBlock();
         Player player = event.getPlayer();
-
+        // 该方块所在的城镇
+        Town town = CoreAPI.getTownManager().getTownByLocation(block.getLocation());
+        if (town == null) {
+            return;
+        }
+        // 是否为敌军破坏
+        if (town.isFriendly(player.getName())) {
+            event.setCancelled(true);
+            return;
+        }
+        Beacon beacon = town.isTownBeacon(block);
+        if (beacon == null) {
+            return;
+        }
+        town.updateBeaconMode(beacon.getLocation(), BeaconMode.OCCUPIED);
     }
 }
