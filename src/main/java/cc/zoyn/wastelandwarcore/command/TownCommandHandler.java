@@ -5,8 +5,11 @@ import cc.zoyn.wastelandwarcore.command.town.TownSetCommand;
 import cc.zoyn.wastelandwarcore.command.town.TownStartWarCommand;
 import cc.zoyn.wastelandwarcore.command.town.TownStopWarCommand;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
+import com.google.common.collect.Maps;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 /**
  * @author Zoyn
@@ -14,12 +17,19 @@ import org.bukkit.command.CommandSender;
  */
 public class TownCommandHandler extends CommandHandler {
 
+    private final static Map<String, SubCommand> commandMap = Maps.newHashMap();
+
     // 初始化指令
-    {
+    public TownCommandHandler() {
         registerSubCommand("help", new TownHelpCommand());
         registerSubCommand("set", new TownSetCommand());
         registerSubCommand("startwar", new TownStartWarCommand());
         registerSubCommand("stopwar", new TownStopWarCommand());
+    }
+
+    @Override
+    public Map<String, SubCommand> getCommandMap() {
+        return commandMap;
     }
 
     @Override

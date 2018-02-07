@@ -78,6 +78,7 @@ public class Entry extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new AsyncPlayerChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new TeleportInterruptListener(), this);
         Bukkit.getPluginManager().registerEvents(new UIListener(), this);
@@ -86,7 +87,6 @@ public class Entry extends JavaPlugin {
         // 注册命令
         Bukkit.getPluginCommand("core").setExecutor(new CoreCommandHandler());
         Bukkit.getPluginCommand("town").setExecutor(new TownCommandHandler());
-
 
         // 注册调度器
         TownDataSaveRunnable townRunnable = new TownDataSaveRunnable();

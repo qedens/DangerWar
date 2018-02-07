@@ -26,7 +26,7 @@ public class PlayerInteractListener implements Listener {
             if (event.hasItem()) {
                 // 是否是法杖
                 if (CoreAPI.getItemManager().isSpecificItem(event.getItem(), Wand.class)) {
-
+                    System.out.println("!!!");
                 }
             }
         }

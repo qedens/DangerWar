@@ -332,13 +332,6 @@ public class Town implements ConfigurationSerializable {
         if (TimeUtils.isWeekDay()) {
 
         }
-        getOnlineMembers().forEach(user -> {
-            Player player = user.getPlayer();
-            if (player != null) {
-                CoreAPI.sendTitle(player, 2, 20, 2, "§6§l[ &e战争冲突 §6§l]", "所有城镇进入§c§l战争§f时期!");
-            }
-        });
-
         getResidences().forEach(residence -> residence.getPermissions().setFlag("break", FlagPermissions.FlagState.TRUE));
         setFighting(true);
     }
@@ -347,12 +340,6 @@ public class Town implements ConfigurationSerializable {
      * 将此城镇更改为和平状态
      */
     public void stopWar() {
-        getOnlineMembers().forEach(user -> {
-            Player player = user.getPlayer();
-            if (player != null) {
-                CoreAPI.sendTitle(player, 2, 20, 2, "§6§l[ &e和平时期 §6§l]", "所有城镇进入§a§l和平§f状态!");
-            }
-        });
         getResidences().forEach(residence -> residence.getPermissions().setFlag("break", FlagPermissions.FlagState.FALSE));
         setFighting(false);
     }
@@ -439,7 +426,7 @@ public class Town implements ConfigurationSerializable {
         town.setOwner((String) map.getOrDefault("owner", "null"));
         town.setMembers((List<String>) map.get("members"));
         town.setAllyByName((String) map.get("ally"));
-        town.setResidences((String[]) map.get("residences"));
+        town.setResidences((String[]) ((List<String>) map.get("residences")).toArray());
         town.setFighting((boolean) map.getOrDefault("fighting", false));
         // 魂晶 魔质
         town.setGhostCrystal(new AtomicDouble((double) map.get("ghost-crystal")));

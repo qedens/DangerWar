@@ -1,14 +1,14 @@
 package cc.zoyn.wastelandwarcore.command;
 
-import cc.zoyn.wastelandwarcore.command.core.HelpCommand;
-import cc.zoyn.wastelandwarcore.command.core.ReloadCommand;
-import cc.zoyn.wastelandwarcore.command.core.SaveCommand;
-import cc.zoyn.wastelandwarcore.command.core.WhoisCommand;
+import cc.zoyn.wastelandwarcore.command.core.*;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
+import com.google.common.collect.Maps;
 import me.skymc.wastelandwarcore.command.TakeItemCommand;
 import me.skymc.wastelandwarcore.command.UpgradeCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 /**
  * @author Zoyn
@@ -16,14 +16,23 @@ import org.bukkit.command.CommandSender;
  */
 public class CoreCommandHandler extends CommandHandler {
 
+    private final static Map<String, SubCommand> commandMap = Maps.newHashMap();
+
     // 初始化指令
-    {
+    public CoreCommandHandler() {
         registerSubCommand("help", new HelpCommand());
         registerSubCommand("save", new SaveCommand());
         registerSubCommand("whois", new WhoisCommand());
         registerSubCommand("reload", new ReloadCommand());
         registerSubCommand("take", new TakeItemCommand());
         registerSubCommand("upgrade", new UpgradeCommand());
+        registerSubCommand("item", new ItemCommand());
+    }
+
+
+    @Override
+    public Map<String, SubCommand> getCommandMap() {
+        return commandMap;
     }
 
     @Override
