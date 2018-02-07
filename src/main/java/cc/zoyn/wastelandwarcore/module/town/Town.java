@@ -17,7 +17,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -146,6 +148,30 @@ public class Town implements ConfigurationSerializable {
         this.darkSteelMagicMatter = new AtomicDouble(darkSteelMagicMatter);
         this.mithrilMagicMatter = new AtomicDouble(mithrilMagicMatter);
         this.eternalGoldMagicMatter = new AtomicDouble(eternalGoldMagicMatter);
+    }
+
+    /**
+     * 修改信标上方玻璃的颜色.
+     *
+     * @param loc  信标的坐标
+     * @param mode 模式
+     */
+    @SuppressWarnings("deprecation")
+    public static void updateBeaconMode(Location loc, BeaconMode mode) {
+        Block glass = loc.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY() + 1, loc.getBlockZ());
+        switch (mode) {
+            case NORMAL:
+                glass.setType(Material.GLASS);
+                break;
+            case OCCUPIED:
+                glass.setTypeIdAndData(Material.STAINED_GLASS.getId(), DyeColor.RED.getWoolData(), true);
+                break;
+            case RESOURCE:
+                glass.setTypeIdAndData(Material.STAINED_GLASS.getId(), DyeColor.PURPLE.getWoolData(), true);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
