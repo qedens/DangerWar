@@ -19,5 +19,6 @@ public class TownHelpCommand implements SubCommand {
         sender.sendMessage(" §b/town set rightUp [城镇名] §7设置你脚下的方块为该城镇的右上核心");
         sender.sendMessage(" §b/town set leftDown [城镇名] §7设置你脚下的方块为该城镇的左下核心");
         sender.sendMessage(" §b/town set rightDown [城镇名] §7设置你脚下的方块为该城镇的右下核心");
+        sender.sendMessage(" §b/town startWar §7开启城镇战争");
     }
 }

@@ -21,6 +21,10 @@ import java.util.List;
 public class CoreAPI {
     private static boolean inWar;
 
+    public static void setInWar(boolean isInWar) {
+        inWar = isInWar;
+    }
+
     /**
      * 获取当前是否为战争状态
      *

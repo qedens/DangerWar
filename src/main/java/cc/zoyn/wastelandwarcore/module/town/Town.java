@@ -6,6 +6,7 @@ import cc.zoyn.wastelandwarcore.module.common.user.User;
 import cc.zoyn.wastelandwarcore.util.TimeUtils;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.comphenix.executors.BukkitExecutors;
 import com.comphenix.executors.BukkitScheduledExecutorService;
 import com.google.common.collect.Lists;
@@ -148,6 +149,35 @@ public class Town implements ConfigurationSerializable {
     }
 
     /**
+     * 获取该城镇可容纳的最大人数
+     *
+     * @return 最大人数
+     */
+    public int getMaxPeople() {
+        return getResidences().size() * 15;
+    }
+
+    /**
+     * 增加一个成员
+     *
+     * @param memberName 成员名
+     * @return 当添加成功时返回true
+     */
+    public boolean addMember(String memberName) {
+        return members.size() < getMaxPeople() && this.members.add(memberName);
+    }
+
+    /**
+     * 移除一个成员
+     *
+     * @param memberName 成员名
+     * @return 当移除成功时返回true
+     */
+    public boolean removeMember(String memberName) {
+        return this.members.remove(memberName);
+    }
+
+    /**
      * 利用城镇名设置盟友
      * <p>传入Null为解除盟约</p>
      *
@@ -250,32 +280,35 @@ public class Town implements ConfigurationSerializable {
     }
 
     /**
-     * 与另一城镇发起战斗
-     *
-     * @param town 另一城镇
+     * 将此城镇更改为战争状态
      */
-    public void fight(Town town) {
-        Validate.notNull(town);
-
+    public void startWar() {
         if (TimeUtils.isWeekDay()) {
 
         }
-
-        // 判断是否为相同城镇
-        if (town.getName().equals(this.name)) {
-            return;
-        }
-
         getOnlineMembers().forEach(user -> {
             Player player = user.getPlayer();
             if (player != null) {
-                CoreAPI.sendTitle(player, 2, 20, 2, "&e战争冲突", "&f城镇 &a&l" + town.getName() + " &f对我们发起了进攻");
+                CoreAPI.sendTitle(player, 2, 20, 2, "§6§l[ &e战争冲突 §6§l]", "所有城镇进入§c§l战争§f时期!");
             }
         });
 
+        getResidences().forEach(residence -> residence.getPermissions().setFlag("break", FlagPermissions.FlagState.TRUE));
         setFighting(true);
-        town.setFighting(true);
+    }
 
+    /**
+     * 将此城镇更改为和平状态
+     */
+    public void stopWar() {
+        getOnlineMembers().forEach(user -> {
+            Player player = user.getPlayer();
+            if (player != null) {
+                CoreAPI.sendTitle(player, 2, 20, 2, "§6§l[ &e和平时期 §6§l]", "所有城镇进入§a§l和平§f状态!");
+            }
+        });
+        getResidences().forEach(residence -> residence.getPermissions().setFlag("break", FlagPermissions.FlagState.FALSE));
+        setFighting(false);
     }
 
     /**
