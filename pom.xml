@@ -81,6 +81,14 @@
             <version>1.6</version>
             <scope>provided</scope>
         </dependency>
+        <!--compete-->
+        <dependency>
+            <groupId>com.gitee.wastelandwarcore.compete</groupId>
+            <artifactId>Compete</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/Compete.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

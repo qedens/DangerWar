@@ -112,6 +112,7 @@ public class Entry extends JavaPlugin {
         return instance;
     }
 
+    @SuppressWarnings("all")
     private void createFiles() {
         if (!townFolder.exists()) {
             townFolder.mkdirs();
