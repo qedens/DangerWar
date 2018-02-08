@@ -25,7 +25,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -263,16 +262,36 @@ public class Town implements ConfigurationSerializable {
         return CoreAPI.getTownManager().getTownByName(ally);
     }
 
-    public void setResidences(String... residenceName) {
-        this.residences.clear();
-        Collections.addAll(this.residences, residenceName);
+    @SuppressWarnings("unchecked")
+    public static Town deserialize(Map<String, Object> map) {
+        Validate.notNull(map);
+
+        System.out.println(map.toString());
+
+        Town town = new Town();
+        town.setName((String) map.getOrDefault("name", "null"));
+        town.setLevel((int) map.getOrDefault("level", 1));
+        town.setOwner((String) map.getOrDefault("owner", "null"));
+        town.setMembers((List<String>) map.getOrDefault("members", Lists.newArrayList()));
+        town.setAllyByName((String) map.get("ally"));
+        town.residences = (List<String>) map.getOrDefault("residences", Lists.newArrayList());
+        town.setFighting((boolean) map.getOrDefault("fighting", false));
+        // 魂晶 魔质
+        town.setGhostCrystal(new AtomicDouble((double) map.get("ghost-crystal")));
+        town.setArcaneCrystal(new AtomicDouble((double) map.get("arcane-crystal")));
+        town.setHolyCrystal(new AtomicDouble((double) map.get("holy-crystal")));
+        town.setDarkSteelMagicMatter(new AtomicDouble((double) map.get("dark-steel-magic-matter")));
+        town.setMithrilMagicMatter(new AtomicDouble((double) map.get("mithril-magic-matter")));
+        town.setEternalGoldMagicMatter(new AtomicDouble((double) map.get("eternal-gold-magic-matter")));
+        return town;
     }
 
-    public void setResidences(List<ClaimedResidence> residences) {
+    public void setResidences(List<String> residenceName) {
         this.residences.clear();
-        for (ClaimedResidence residence : residences) {
-            this.residences.add(residence.getName());
+        if (residenceName == null || residenceName.isEmpty()) {
+            return;
         }
+        this.residences.addAll(residenceName);
     }
 
     public List<ClaimedResidence> getResidences() {
@@ -416,26 +435,11 @@ public class Town implements ConfigurationSerializable {
         return isMember(playerName) || isAlly(playerName);
     }
 
-    @SuppressWarnings("unchecked")
-    public static Town deserialize(Map<String, Object> map) {
-        Validate.notNull(map);
-
-        Town town = new Town();
-        town.setName((String) map.getOrDefault("name", "null"));
-        town.setLevel((int) map.getOrDefault("level", 1));
-        town.setOwner((String) map.getOrDefault("owner", "null"));
-        town.setMembers((List<String>) map.get("members"));
-        town.setAllyByName((String) map.get("ally"));
-        town.setResidences((String[]) ((List<String>) map.get("residences")).toArray());
-        town.setFighting((boolean) map.getOrDefault("fighting", false));
-        // 魂晶 魔质
-        town.setGhostCrystal(new AtomicDouble((double) map.get("ghost-crystal")));
-        town.setArcaneCrystal(new AtomicDouble((double) map.get("arcane-crystal")));
-        town.setHolyCrystal(new AtomicDouble((double) map.get("holy-crystal")));
-        town.setDarkSteelMagicMatter(new AtomicDouble((double) map.get("dark-steel-magic-matter")));
-        town.setMithrilMagicMatter(new AtomicDouble((double) map.get("mithril-magic-matter")));
-        town.setEternalGoldMagicMatter(new AtomicDouble((double) map.get("eternal-gold-magic-matter")));
-        return town;
+    public void setResidences(ClaimedResidence... residences) {
+        this.residences.clear();
+        for (ClaimedResidence residence : residences) {
+            this.residences.add(residence.getName());
+        }
     }
 
     @Override

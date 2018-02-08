@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
@@ -74,15 +75,20 @@ public class User implements ConfigurationSerializable {
     @Setter
     private SpecialEffectPlayer effects;
 
-    /**
-     * 获取该用户的 Player 对象
-     * <p>
-     * 如果该用户不在线会返回 null
-     *
-     * @return {@link Player}
-     */
-    public Player getPlayer() {
-        return Bukkit.getPlayer(name);
+    public static User deserialize(Map<String, Object> map) {
+        Validate.notNull(map);
+
+        User user = new User();
+        user.setName((String) map.get("name"));
+        user.setChannel((String) map.get("channel"));
+        user.setTown((String) map.get("town"));
+        user.setTalent((Talent) map.get("talent"));
+        user.setArmor((double) map.get("armor"));
+        user.setResistance((double) map.get("resistance"));
+        // 此处需精度转换
+        BigDecimal decimal = new BigDecimal(map.get("moveSpeed").toString());
+        user.setMoveSpeed(decimal.floatValue());
+        return user;
     }
 
     public Channel getChannel() {
@@ -97,22 +103,18 @@ public class User implements ConfigurationSerializable {
      */
     public Town getTown() {
         return Optional.ofNullable(CoreAPI.getTownManager().getTownByName(town))
-        		.orElse(CoreAPI.getTownManager().getRefugeeTown());
+                .orElse(CoreAPI.getTownManager().getRefugeeTown());
     }
 
-    public static User deserialize(Map<String, Object> map) {
-        Validate.notNull(map);
-
-        User user = new User();
-        user.setName((String) map.get("name"));
-        user.setChannel((String) map.get("channel"));
-        user.setTown((String) map.get("town"));
-        user.setTalent((Talent) map.get("talent"));
-        user.setArmor((double) map.get("armor"));
-        user.setResistance((double) map.get("resistance"));
-        user.setMoveSpeed((float) map.get("moveSpeed"));
-        user.setEffects((SpecialEffectPlayer) map.get("effects"));
-        return user;
+    /**
+     * 获取该用户的 Player 对象
+     * <p>
+     * 如果该用户不在线会返回 null
+     *
+     * @return {@link Player}
+     */
+    public Player getPlayer() {
+        return Bukkit.getPlayerExact(name);
     }
 
     @Override
@@ -125,7 +127,6 @@ public class User implements ConfigurationSerializable {
         map.put("armor", armor);
         map.put("resistance", resistance);
         map.put("moveSpeed", moveSpeed);
-        map.put("effects", effects);
         return map;
     }
 }
