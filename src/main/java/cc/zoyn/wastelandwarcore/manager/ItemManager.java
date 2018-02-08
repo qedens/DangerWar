@@ -160,6 +160,10 @@ public class ItemManager extends AbstractManager<UniversalItem> implements Savab
         return null;
     }
 
+    public <T> T getItemByName(String itemName, Class<T> t) {
+        return (T) getItemByName(itemName);
+    }
+
     @Override
     public void saveElements(List<UniversalItem> elements) {
         elements.forEach(this::saveElement);

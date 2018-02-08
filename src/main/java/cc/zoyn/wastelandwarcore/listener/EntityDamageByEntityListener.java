@@ -10,7 +10,6 @@ import cc.zoyn.wastelandwarcore.module.item.IWeapon;
 import cc.zoyn.wastelandwarcore.util.ItemStackUtils;
 import cc.zoyn.wastelandwarcore.util.PlayerUtils;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -74,13 +73,6 @@ public class EntityDamageByEntityListener implements Listener {
                     }
                 }
             }
-        }
-
-        // 以下考虑抛射物命中
-        if (event.getDamager() instanceof Projectile) {
-            Projectile projectile = (Projectile) event.getDamager();
-//            Wand wand = new Wand(null, 0, 1, null, null, 0, AttributeType.POISON);
-//            wand.getAttribute().getSpecialAttribute().getConsumer().accept(攻击的人, 被攻击的人);
         }
     }
 }
