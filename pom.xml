@@ -15,6 +15,10 @@
             <name>Zoyn</name>
             <url>http://zoyn.cc/</url>
         </developer>
+        <developer>
+            <name>Lss233</name>
+            <url>https://lss233.com</url>
+        </developer>
     </developers>
 
     <properties>
@@ -23,20 +27,8 @@
 
     <repositories>
         <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>elmakers-repo</id>
-            <url>http://maven.elmakers.com/repository</url>
-        </repository>
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>http://repo.dmulloy2.net/content/groups/public/</url>
+            <id>lss233's minecraft-repo</id>
+            <url>https://lss233.com/artifactory/minecraft-repo/</url>
         </repository>
     </repositories>
 
