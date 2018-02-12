@@ -1,4 +1,6 @@
 GeneralOption:
+  # 调试模式
+  DebugMode: true
   # 频道选项
   ChannelOption:
     # 默认频道

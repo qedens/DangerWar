@@ -1,5 +1,6 @@
 package cc.zoyn.wastelandwarcore.api;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.manager.*;
 import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.util.ActionBarUtils;
@@ -153,4 +154,7 @@ public class CoreAPI {
         return town;
     }
 
+    public static boolean isDebugMode() {
+        return Entry.getInstance().getConfig().getBoolean("GeneralOption.DebugMode", false);
+    }
 }
