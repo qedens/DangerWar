@@ -3,6 +3,10 @@ package cc.zoyn.wastelandwarcore.listener;
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.api.event.WarStartEvent;
 import cc.zoyn.wastelandwarcore.api.event.WarStopEvent;
+import cc.zoyn.wastelandwarcore.exception.InvalidTownCoreException;
+import cc.zoyn.wastelandwarcore.manager.TownManager;
+import cc.zoyn.wastelandwarcore.manager.UserManager;
+import cc.zoyn.wastelandwarcore.model.TownCore;
 import cc.zoyn.wastelandwarcore.module.town.BeaconMode;
 import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.util.CommonUtils;
@@ -76,20 +80,21 @@ public class WarListener implements Listener {
         }
         Block block = event.getBlock();
         Player player = event.getPlayer();
-        // 该方块所在的城镇
-        Town town = CoreAPI.getTownManager().getTownByLocation(block.getLocation());
-        if (town == null) {
+
+        try {
+            TownCore core  = new TownCore(block);
+
+            // 是否为敌军破坏
+            if (core.getTown().isFriendly(player.getName())) {
+                event.setCancelled(true);
+                return; // 友军破坏
+            }
+            core.updateBeaconMode();
+            core.setTown(UserManager.getInstance().getUserByPlayer(player).getTown());
+        } catch (InvalidTownCoreException e) {
+            if(CoreAPI.isDebugMode())
+                e.printStackTrace();
             return;
         }
-        // 是否为敌军破坏
-        if (town.isFriendly(player.getName())) {
-            event.setCancelled(true);
-            return;
-        }
-        Beacon beacon = town.isTownBeacon(block);
-        if (beacon == null) {
-            return;
-        }
-        town.updateBeaconMode(beacon.getLocation(), BeaconMode.OCCUPIED);
     }
 }
