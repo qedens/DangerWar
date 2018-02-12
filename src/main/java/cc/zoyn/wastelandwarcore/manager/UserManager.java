@@ -5,6 +5,7 @@ import cc.zoyn.wastelandwarcore.module.common.user.User;
 import cc.zoyn.wastelandwarcore.util.ConfigurationUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.List;
@@ -41,7 +42,7 @@ public class UserManager extends AbstractManager<User> implements SavableManager
 
     /**
      * 利用用户名字获取用户对象
-     * <p>利用用户名字获取UI对象,当获取不到时返回 null 值<p/>
+     * <p>利用用户名字获取UI对象,当获取不到时返回 null 值</p>
      *
      * @param userName 用户名
      * @return {@link User}
@@ -68,5 +69,16 @@ public class UserManager extends AbstractManager<User> implements SavableManager
         FileConfiguration fileConfiguration = ConfigurationUtils.loadYml(file);
         fileConfiguration.set("User", user);
         ConfigurationUtils.saveYml(fileConfiguration, file);
+    }
+
+    /**
+     * 根据Player获取UI对象
+     * <p>根据Player获取UI对象,当获取不到时返回 null 值</p>
+     *
+     * @param player 玩家实例
+     * @return {@link User}
+     */
+    public User getUserByPlayer(Player player) {
+        return getUserByName(player.getName());
     }
 }
