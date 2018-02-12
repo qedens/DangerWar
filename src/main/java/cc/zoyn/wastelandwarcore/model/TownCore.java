@@ -7,6 +7,7 @@ import cc.zoyn.wastelandwarcore.module.town.Town;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 
 /**
@@ -20,7 +21,7 @@ public class TownCore {
     private BeaconMode mode;
 
     /**
-     * 通过信标方块获取城镇核心
+     * 通过方块获取城镇核心
      * @param block 信标方块
      * @throws InvalidTownCoreException 当认错城镇核心方块时抛出.
      */
@@ -31,6 +32,17 @@ public class TownCore {
         this.glass = block.getWorld().getBlockAt(location.getBlockX(), location.getBlockY() + 1, location.getBlockZ());
         validTownCore();
     }
+    /**
+     * 通过信标方块获取城镇核心
+     * @param block 信标方块
+     */
+    public TownCore(Beacon block) {
+        this.town = TownManager.getInstance().getTownByLocation(block.getLocation());
+        this.block = block.getBlock();
+        this.location = block.getLocation();
+        this.glass = block.getWorld().getBlockAt(location.getBlockX(), location.getBlockY() + 1, location.getBlockZ());
+    }
+
     /**
      * 获取所属城镇
      * @return 所属城镇

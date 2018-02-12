@@ -2,6 +2,8 @@ package cc.zoyn.wastelandwarcore.module.town;
 
 import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
+import cc.zoyn.wastelandwarcore.exception.InvalidTownCoreException;
+import cc.zoyn.wastelandwarcore.model.TownCore;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
 import cc.zoyn.wastelandwarcore.util.TimeUtils;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
@@ -49,10 +51,10 @@ public class Town implements ConfigurationSerializable {
     private List<String> residences;
 
     // 四个核心(信标)
-    private Beacon leftUpBeacon;
-    private Beacon rightUpBeacon;
-    private Beacon leftDownBeacon;
-    private Beacon rightDownBeacon;
+    private TownCore leftUpBeacon;
+    private TownCore rightUpBeacon;
+    private TownCore leftDownBeacon;
+    private TownCore rightDownBeacon;
     // 基底
     private Block centerEndBlock;
     private boolean fighting = false;
@@ -121,10 +123,10 @@ public class Town implements ConfigurationSerializable {
         this.members = members;
         this.ally = ally;
         this.residences = residences;
-        this.leftUpBeacon = leftUpBeacon;
-        this.rightUpBeacon = rightUpBeacon;
-        this.leftDownBeacon = leftDownBeacon;
-        this.rightDownBeacon = rightDownBeacon;
+        this.leftUpBeacon = new TownCore(leftUpBeacon);
+        this.rightUpBeacon = new TownCore(rightUpBeacon);
+        this.leftDownBeacon = new TownCore(leftDownBeacon);
+        this.rightDownBeacon = new TownCore(rightDownBeacon);
         this.centerEndBlock = centerEndBlock;
     }
 
@@ -135,10 +137,10 @@ public class Town implements ConfigurationSerializable {
         this.members = members;
         this.ally = ally;
         this.residences = residences;
-        this.leftUpBeacon = leftUpBeacon;
-        this.rightUpBeacon = rightUpBeacon;
-        this.leftDownBeacon = leftDownBeacon;
-        this.rightDownBeacon = rightDownBeacon;
+        this.leftUpBeacon = new TownCore(leftUpBeacon);
+        this.rightUpBeacon = new TownCore(rightUpBeacon);
+        this.leftDownBeacon = new TownCore(leftDownBeacon);
+        this.rightDownBeacon = new TownCore(rightDownBeacon);
         this.centerEndBlock = centerEndBlock;
         this.fighting = fighting;
         this.ghostCrystal = new AtomicDouble(ghostCrystal);
@@ -156,14 +158,14 @@ public class Town implements ConfigurationSerializable {
      * @return 当是的时候返回该核心(信标)对象, 否则返回null
      */
     public Beacon isTownBeacon(Block block) {
-        if (leftUpBeacon.equals(block)) {
-            return leftUpBeacon;
-        } else if (rightUpBeacon.equals(block)) {
-            return rightUpBeacon;
-        } else if (leftDownBeacon.equals(block)) {
-            return leftDownBeacon;
-        } else if (rightDownBeacon.equals(block)) {
-            return rightDownBeacon;
+        if (leftUpBeacon.getBlock().equals(block)) {
+            return (Beacon) leftUpBeacon.getBlock();
+        } else if (rightUpBeacon.getBlock().equals(block)) {
+            return (Beacon) rightUpBeacon.getBlock();
+        } else if (leftDownBeacon.getBlock().equals(block)) {
+            return (Beacon) leftDownBeacon.getBlock();
+        } else if (rightDownBeacon.getBlock().equals(block)) {
+            return (Beacon) rightDownBeacon.getBlock();
         }
 
         return null;
