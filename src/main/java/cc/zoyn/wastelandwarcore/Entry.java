@@ -83,6 +83,7 @@ public class Entry extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TeleportInterruptListener(), this);
         Bukkit.getPluginManager().registerEvents(new UIListener(), this);
         Bukkit.getPluginManager().registerEvents(new WarListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BarListener(), this); // 交互系统
 
         // 注册命令
         Bukkit.getPluginCommand("core").setExecutor(new CoreCommandHandler());
