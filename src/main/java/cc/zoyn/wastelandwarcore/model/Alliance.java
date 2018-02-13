@@ -27,11 +27,20 @@ public class Alliance implements ConfigurationSerializable {
     @Setter
     private String leader;
 
+    /**
+     * 通过{@link UUID}创建联盟
+     *
+     * @param uniqueId UUID
+     */
     public Alliance(UUID uniqueId) {
         this.rebel = false;
         this.uniqueId = uniqueId;
     }
 
+    /**
+     * 通过盟主的名字创建联盟
+     * @param leader 盟主的名字
+     */
     public Alliance(String leader) {
         this.rebel = false;
         this.uniqueId = UUID.randomUUID();
@@ -80,6 +89,10 @@ public class Alliance implements ConfigurationSerializable {
         return false;
     }
 
+    /**
+     * 获取盟主
+     * @return 盟主
+     */
     public User getLeader() {
         return CoreAPI.getUserManager().getUserByName(leader);
     }
@@ -95,6 +108,10 @@ public class Alliance implements ConfigurationSerializable {
         return serialized;
     }
 
+    /**
+     * 获取联盟的展示名称
+     * @return 展示名称
+     */
     public String getName() {
         return leader + "势力";
     }

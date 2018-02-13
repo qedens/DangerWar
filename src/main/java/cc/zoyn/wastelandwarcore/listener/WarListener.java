@@ -113,6 +113,11 @@ public class WarListener implements Listener {
         }
     }
 
+    /**
+     * 盟军破坏任意非己方核心，重新占领城镇
+     *
+     * @param event 方块被破坏事件
+     */
     @EventHandler
     public void onClaimTownCore(BlockBreakEvent event) {
         if (CoreAPI.isInWar()) {

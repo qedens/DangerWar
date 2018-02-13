@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,7 +21,6 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
 
     private static volatile TownManager instance;
     public static Town DEFAULT_TOWN = new Town(UUID.fromString("00000000-0000-0000-0000-000000000001"));
-    ;
 
     private TownManager() {
     }
@@ -68,11 +66,6 @@ public class TownManager extends AbstractManager<Town> implements SavableManager
                 .filter(town -> town.getName().equalsIgnoreCase(name))
                 .findAny();
     }
-    @Override
-    public void saveElements(List<Town> elements) {
-        elements.forEach(this::saveElement);
-    }
-
     @Override
     public void saveElement(Town town) {
         Validate.notNull(town);

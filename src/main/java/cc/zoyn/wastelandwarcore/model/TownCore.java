@@ -142,6 +142,9 @@ public class TownCore implements ConfigurationSerializable {
         return new TownCore(((Location) map.get("location")).getBlock());
     }
 
+    /**
+     * 更新信标状态到城镇方块中.
+     */
     public void update() {
         for (int i = 0; i < town.getTownCores().length; i++) {
             if (this.equals(town.getTownCores()[i]))

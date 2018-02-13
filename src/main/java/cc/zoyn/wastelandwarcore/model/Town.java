@@ -101,10 +101,20 @@ public class Town implements ConfigurationSerializable {
         }, 1, TimeUnit.HOURS);
     }
 
+    /**
+     * 通过UUID创建城镇
+     *
+     * @param uniqueId
+     */
     public Town(UUID uniqueId) {
         this.uniqueId = uniqueId;
     }
 
+    /**
+     * 反序列化城镇实例
+     * @param map 存放序列化后的Map
+     * @return 城镇实例
+     */
     public static Town deserialize(Map<String, Object> map) {
         return new Town(
                 UUID.fromString(String.valueOf(map.get("uniqueId"))),
@@ -141,10 +151,20 @@ public class Town implements ConfigurationSerializable {
         return map;
     }
 
+    /**
+     * 判断一个位置是否在城镇范围内
+     * @param location 位置
+     * @return 是则返回true
+     */
     public boolean containsLocation(Location location) {
         return residence.containsLoc(location);
     }
 
+    /**
+     * 判断一个玩家对该城镇是否友好
+     * @param playerName 玩家名
+     * @return 友好则返回true
+     */
     public boolean isFriendly(String playerName) {
         return getAlliance().getAllies().stream().anyMatch(user -> user.getName().equalsIgnoreCase(playerName));
     }
