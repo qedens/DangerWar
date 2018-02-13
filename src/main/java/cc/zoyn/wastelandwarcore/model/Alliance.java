@@ -1,6 +1,8 @@
 package cc.zoyn.wastelandwarcore.model;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
+import cc.zoyn.wastelandwarcore.api.event.AllianceJoinEvent;
+import cc.zoyn.wastelandwarcore.manager.AllianceManager;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
 import lombok.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -82,7 +84,11 @@ public class Alliance implements ConfigurationSerializable {
      * @return 成功则返回true
      */
     public boolean join(User ally) {
-        if (allies.size() < getMaxAlliesCount()) {
+        if (this.equals(AllianceManager.DEFAULT_ALLIANCE)) { // 默认城镇拥有无限的容量
+            allies.add(ally);
+            return true;
+        } else if (allies.size() < getMaxAlliesCount()) {
+            AllianceJoinEvent event = new AllianceJoinEvent(this, ally);
             allies.add(ally);
             return true;
         }

@@ -1,9 +1,7 @@
 package cc.zoyn.wastelandwarcore.listener;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.api.event.TownOwnerTransferEvent;
-import cc.zoyn.wastelandwarcore.api.event.WarStartEvent;
-import cc.zoyn.wastelandwarcore.api.event.WarStopEvent;
+import cc.zoyn.wastelandwarcore.api.event.*;
 import cc.zoyn.wastelandwarcore.exception.InvalidTownCoreException;
 import cc.zoyn.wastelandwarcore.manager.TownManager;
 import cc.zoyn.wastelandwarcore.manager.UserManager;
@@ -181,6 +179,32 @@ public class WarListener implements Listener {
             }
         });
         */
+    }
+
+    /**
+     * 战争期间禁止自立为叛军
+     *
+     * @param event 联盟创建事件
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onWarLimit(AllianceCreatedEvent event) {
+        if (!CoreAPI.isInWar())
+            return;
+        if (event.getAlliance().isRebel())
+            event.setCancelled(true);
+    }
+
+    /**
+     * 战争期间禁止接纳流民
+     *
+     * @param event 联盟创建事件
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onWarLimit(AllianceJoinEvent event) {
+        if (!CoreAPI.isInWar())
+            return;
+        if (event.getAlliance().isRebel())
+            event.setCancelled(true);
     }
 
 }
