@@ -10,6 +10,7 @@ import cc.zoyn.wastelandwarcore.manager.UserManager;
 import cc.zoyn.wastelandwarcore.model.Town;
 import cc.zoyn.wastelandwarcore.model.TownCore;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
+import cc.zoyn.wastelandwarcore.runnable.WarDebuffRunnable;
 import cc.zoyn.wastelandwarcore.util.CommonUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -19,6 +20,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Optional;
 
@@ -31,9 +34,11 @@ import static cc.zoyn.wastelandwarcore.manager.AllianceManager.DEFAULT_ALLIANCE;
  * @since 2018-01-29
  */
 public class WarListener implements Listener {
+    private final PotionEffect slowDigging = new PotionEffect(PotionEffectType.SLOW_DIGGING, 1, 2);
 
     @EventHandler
     public void onWarStart(WarStartEvent event) {
+        WarDebuffRunnable.PROCEED = true;
         CommonUtils.getOnlinePlayers().forEach(user -> {
             Player player = user.getPlayer();
             if (player != null) {
@@ -50,6 +55,7 @@ public class WarListener implements Listener {
                 CoreAPI.sendTitle(player, 2, 20, 2, "§6§l[ §e和平时期 §6§l]", "所有城镇进入§a§l和平§f状态!");
             }
         });
+        WarDebuffRunnable.PROCEED = false;
     }
 
     /**
@@ -67,10 +73,11 @@ public class WarListener implements Listener {
         Player player = event.getPlayer();
         Optional<Town> town = CoreAPI.getTownManager().getTown(block.getLocation());
 
-        //放置的方块在城镇内，玩家非友军，方块下方为空气，取消事件
-        if (town.isPresent() && !town.get().isFriendly(player.getName()) && block.getRelative(BlockFace.DOWN).isEmpty()) {
-            event.setCancelled(true);
-        }
+        //开启DEBUFF,放置的方块在城镇内，玩家非友军，方块下方为空气，取消事件
+        if (WarDebuffRunnable.PROCEED)
+            if (town.isPresent() && !town.get().isFriendly(player.getName()) && block.getRelative(BlockFace.DOWN).isEmpty()) {
+                event.setCancelled(true);
+            }
     }
 
     /**
@@ -98,6 +105,7 @@ public class WarListener implements Listener {
             core.setOwner(CoreAPI.getAllianceManager().getAlliance(player).get());
             // core.setClaimer(UserManager.getInstance().getUserByPlayer(player).getTown());
             core.update();
+            WarDebuffRunnable.PROCEED = false;
             event.setCancelled(true);
         } catch (InvalidTownCoreException e) {
             if(CoreAPI.isDebugMode())
@@ -118,6 +126,7 @@ public class WarListener implements Listener {
             if (!resident.getAlliance().equals(core.getTown().getAlliance())) {
                 core.getTown().setAlliance(resident.getAlliance());
                 // 抢回来了。
+                //TODO: 交互，这里是不是要发个贺电?
             }
             event.setCancelled(true);
         } catch (InvalidTownCoreException e) {
@@ -156,6 +165,7 @@ public class WarListener implements Listener {
                     Bukkit.getPluginManager().callEvent(townOwnerTransferEvent);
                     if (!townOwnerTransferEvent.isCancelled())
                         town.setAlliance(town.getTownCores()[0].getTown().getAlliance());
+                    // TODO: 交互，这里城镇占领成功了。
                 });
 
         // 系统: 重置所有核心状况
@@ -167,4 +177,5 @@ public class WarListener implements Listener {
         });
         */
     }
+
 }

@@ -113,7 +113,7 @@ public class Entry extends JavaPlugin {
         townRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         userRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
         allianceRunnable.runTaskTimerAsynchronously(this, 20L, 10 * 60 * 20L);
-        warDebuffRunnable.runTaskTimer(this, 20L, 3 * 20L);
+        warDebuffRunnable.runTaskTimer(this, 20L, 1 * 20L);
         
         // 重载表达式
         WeaponLevelManager.getInst().reloadPattern();

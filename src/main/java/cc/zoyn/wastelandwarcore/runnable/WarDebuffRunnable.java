@@ -18,22 +18,26 @@ import java.util.Optional;
  * @since 2018-02-07
  */
 public class WarDebuffRunnable extends BukkitRunnable {
-
-    private static final PotionEffect EFFECT = new PotionEffect(PotionEffectType.SLOW_DIGGING, 20, 20);
+    private static final PotionEffect EFFECT = new PotionEffect(PotionEffectType.SLOW_DIGGING, 5 * 20, 20);
+    /**
+     * 是否启用本次战役的debuff
+     */
+    public static boolean PROCEED = false;
 
     @Override
     public void run() {
         // 战争期间起作用
         if (CoreAPI.isInWar()) {
-            CommonUtils.getOnlinePlayers().forEach(player -> {
-                Optional<Town> town = CoreAPI.getTownManager().getTown(player.getLocation());
-                if (town.isPresent()) {
-                    // 判断是否在敌营
-                    if (town.get().isFriendly(player.getName())) {
-                        player.addPotionEffect(EFFECT);
+            if (PROCEED)
+                CommonUtils.getOnlinePlayers().forEach(player -> {
+                    Optional<Town> town = CoreAPI.getTownManager().getTown(player.getLocation());
+                    if (town.isPresent()) {
+                        // 判断是否在敌营
+                        if (town.get().isFriendly(player.getName())) {
+                            player.addPotionEffect(EFFECT);
+                        }
                     }
-                }
-            });
+                });
         }
     }
 }
