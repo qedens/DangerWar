@@ -1,10 +1,11 @@
 package cc.zoyn.wastelandwarcore.module.common.user;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
+import cc.zoyn.wastelandwarcore.manager.AllianceManager;
+import cc.zoyn.wastelandwarcore.model.Alliance;
 import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
 import cc.zoyn.wastelandwarcore.module.common.talent.Talent;
-import cc.zoyn.wastelandwarcore.module.town.Town;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 表示一个用户
@@ -40,10 +41,11 @@ public class User implements ConfigurationSerializable {
     @Setter
     private String channel;
     /**
-     * 用户所在城镇
+     * 用户所在联盟
      */
+    @Getter
     @Setter
-    private String town;
+    private Alliance alliance;
     /**
      * 用户天赋
      */
@@ -81,7 +83,7 @@ public class User implements ConfigurationSerializable {
         User user = new User();
         user.setName((String) map.get("name"));
         user.setChannel((String) map.get("channel"));
-        user.setTown((String) map.get("town"));
+        user.setAlliance(AllianceManager.getInstance().getAlliance(UUID.fromString((String) map.getOrDefault("alliance", AllianceManager.DEFAULT_ALLIANCE.getUniqueId().toString()))).orElse(AllianceManager.DEFAULT_ALLIANCE));
         user.setTalent((Talent) map.get("talent"));
         user.setArmor((double) map.get("armor"));
         user.setResistance((double) map.get("resistance"));
@@ -93,17 +95,6 @@ public class User implements ConfigurationSerializable {
 
     public Channel getChannel() {
         return CoreAPI.getChannelManager().getChannelByName(channel);
-    }
-
-    /**
-     * 获取该用户所属的城镇对象
-     * <p>如果该用户没有所属势力会返回流民城镇对象</p>
-     *
-     * @return {@link Town}
-     */
-    public Town getTown() {
-        return Optional.ofNullable(CoreAPI.getTownManager().getTownByName(town))
-                .orElse(CoreAPI.getTownManager().getRefugeeTown());
     }
 
     /**
@@ -122,7 +113,7 @@ public class User implements ConfigurationSerializable {
         Map<String, Object> map = Maps.newHashMap();
         map.put("name", name);
         map.put("channel", channel);
-        map.put("town", town);
+        map.put("alliance", alliance == null ? AllianceManager.DEFAULT_ALLIANCE : alliance.getUniqueId().toString());
         map.put("talent", talent);
         map.put("armor", armor);
         map.put("resistance", resistance);

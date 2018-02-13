@@ -12,6 +12,8 @@ public interface SavableManager<T> {
 
     void saveElement(T t);
 
-    void saveElements(List<T> elements);
+    default void saveElements(List<T> elements) {
+        elements.forEach(this::saveElement);
+    }
 
 }

@@ -1,6 +1,6 @@
 package cc.zoyn.wastelandwarcore.api.event;
 
-import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.model.Town;
 import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

@@ -11,7 +11,6 @@ import cc.zoyn.wastelandwarcore.module.item.IArmor;
 import cc.zoyn.wastelandwarcore.module.item.Shoes;
 import cc.zoyn.wastelandwarcore.module.item.UniversalItem;
 import lombok.Getter;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,11 +19,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static cc.zoyn.wastelandwarcore.util.ItemStackUtils.itemHasDisplayName;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static cc.zoyn.wastelandwarcore.util.ItemStackUtils.itemHasDisplayName;
 
 public final class PlayerUtils {
     /**
@@ -245,7 +244,7 @@ public final class PlayerUtils {
      * @return true代表是/false代表不是
      */
     public static boolean isRefugee(Player player) {
-    	return CoreAPI.getUserManager().getUserByName(player.getName()).getTown().getName().equals("流民");
+        return CoreAPI.getUserManager().getUserByName(player.getName()).getAlliance() == null;
     }
     
     /**
@@ -255,6 +254,7 @@ public final class PlayerUtils {
      * @return true代表是/false代表不是
      */
     public static boolean isRebel(Player player) {
-    	return CoreAPI.getUserManager().getUserByName(player.getName()).getTown().getName().startsWith("叛军");
+        if (isRefugee(player)) return false;
+        return CoreAPI.getUserManager().getUserByName(player.getName()).getAlliance().isRebel();
     }
 }

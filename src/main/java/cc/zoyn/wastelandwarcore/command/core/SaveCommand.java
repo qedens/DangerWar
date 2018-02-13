@@ -16,6 +16,7 @@ public class SaveCommand implements SubCommand {
     public void execute(CommandSender sender, String[] args) {
         CoreAPI.getTownManager().saveElements(CoreAPI.getTownManager().getList());
         CoreAPI.getUserManager().saveElements(CoreAPI.getUserManager().getList());
+        CoreAPI.getAllianceManager().saveElements(CoreAPI.getAllianceManager().getList());
         sender.sendMessage("§c[§6WastelandWarCore§c] §a保存成功!");
     }
 }

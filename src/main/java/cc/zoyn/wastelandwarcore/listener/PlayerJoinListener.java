@@ -1,13 +1,6 @@
 package cc.zoyn.wastelandwarcore.listener;
 
-import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.module.common.chat.Channel;
-import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
-import cc.zoyn.wastelandwarcore.module.common.user.User;
-import cc.zoyn.wastelandwarcore.module.town.Town;
-import cc.zoyn.wastelandwarcore.util.PlayerUtils;
-
-import org.bukkit.entity.Player;
+import cc.zoyn.wastelandwarcore.Entry;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -22,14 +15,7 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        Channel channel = CoreAPI.getChannelManager().getDefaultChannel();
-        Town town = CoreAPI.getTownManager().getTownByMember(player.getName());
-        User user = new User(player.getName(), channel.getName(), town.getName(), null, PlayerUtils.getArmor(player), 
-        		PlayerUtils.getResistance(player), PlayerUtils.getMoveSpeed(player), new SpecialEffectPlayer());
-
-        channel.addUser(user);
-        CoreAPI.getUserManager().addElement(user);
+        Entry.getInstance().initializePlayer(event.getPlayer());
     }
 
 }

@@ -19,6 +19,7 @@ public class HelpCommand implements SubCommand {
         sender.sendMessage(" §b/core whois town [城镇名] §7查询该城镇信息");
         sender.sendMessage(" §b/core save §7保存所有数据");
         sender.sendMessage(" §b/core item [武器名] §7获取该武器");
+        sender.sendMessage(" §b/core create alliance [盟主名]§7创建联盟");
         sender.sendMessage(" ");
         sender.sendMessage(" §c/core take [玩家] [数量] [名称] §4移除指定数量的指定物品");
         sender.sendMessage(" §c/core upgrade §4升级你手中的武器");

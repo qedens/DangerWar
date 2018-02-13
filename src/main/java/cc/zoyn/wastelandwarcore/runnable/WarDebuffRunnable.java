@@ -1,11 +1,13 @@
 package cc.zoyn.wastelandwarcore.runnable;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.model.Town;
 import cc.zoyn.wastelandwarcore.util.CommonUtils;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Optional;
 
 /**
  * 该计划任务用于
@@ -24,10 +26,10 @@ public class WarDebuffRunnable extends BukkitRunnable {
         // 战争期间起作用
         if (CoreAPI.isInWar()) {
             CommonUtils.getOnlinePlayers().forEach(player -> {
-                Town town = CoreAPI.getTownManager().getTownByLocation(player.getLocation());
-                if (town != null) {
+                Optional<Town> town = CoreAPI.getTownManager().getTown(player.getLocation());
+                if (town.isPresent()) {
                     // 判断是否在敌营
-                    if (!town.isFriendly(player.getName())) {
+                    if (town.get().isFriendly(player.getName())) {
                         player.addPotionEffect(EFFECT);
                     }
                 }

@@ -3,18 +3,22 @@ package cc.zoyn.wastelandwarcore.listener;
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.manager.ItemManager;
 import cc.zoyn.wastelandwarcore.manager.UserManager;
+import cc.zoyn.wastelandwarcore.model.Alliance;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffect;
 import cc.zoyn.wastelandwarcore.module.common.specialeffect.SpecialEffectPlayer;
 import cc.zoyn.wastelandwarcore.module.common.user.User;
 import cc.zoyn.wastelandwarcore.module.item.IWeapon;
 import cc.zoyn.wastelandwarcore.util.ItemStackUtils;
 import cc.zoyn.wastelandwarcore.util.PlayerUtils;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
 
 /**
  * 本类进行 实体攻击 的相关处理
@@ -26,12 +30,12 @@ public class EntityDamageByEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onDamage(EntityDamageByEntityEvent event) {
-        //如果攻击者和被攻击者皆属玩家且是盟友攻击将取消
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player &&
-                CoreAPI.isFriendly((Player) event.getDamager(), (Player) event.getEntity())) {
+        if (!validPVP(event.getEntity(), event.getDamager())) {
             event.setCancelled(true);
             return;
         }
+        if (!(event.getDamager() instanceof Player && event.getEntity() instanceof Player))
+            return;
         UserManager manager = UserManager.getInstance();
         //被攻击者是玩家
         if (event.getEntity() instanceof Player) {
@@ -74,5 +78,35 @@ public class EntityDamageByEntityListener implements Listener {
                 }
             }
         }
+    }
+
+    /**
+     * 判断本次战役是否允许
+     * 判断条件:
+     * 1. 双方是否人类玩家
+     * 2. 任意方是否在流民阵营
+     * 3. 双方是否属于同联盟
+     *
+     * @param entity  攻击方A
+     * @param damager 攻击方B
+     * @return 允许就返回true
+     */
+    private boolean validPVP(Entity entity, Entity damager) {
+        // # 1
+        if (!(entity instanceof Player))
+            return true;
+        if (!(damager instanceof Player))
+            return true;
+        Optional<Alliance> allianceA = CoreAPI.getAllianceManager().getAlliance((Player) entity);
+        Optional<Alliance> allianceB = CoreAPI.getAllianceManager().getAlliance((Player) damager);
+        if (!(allianceA.isPresent() && allianceB.isPresent()))
+            return true;
+        // # 2
+        if (allianceA.get().isRebel() || allianceB.get().isRebel())
+            return true;
+        // # 3
+        if (allianceA.get().equals(allianceB.get()))
+            return false;
+        return false;
     }
 }

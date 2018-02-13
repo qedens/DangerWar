@@ -82,7 +82,7 @@ public class Channel {
         return channelFormat
                 .replaceAll("&", "§")
                 .replaceAll("%channel%", getName())
-                .replaceAll("%town_name%", user.getTown().getName())
+                .replaceAll("%alliance_name%", user.getAlliance().getName())
                 .replaceAll("%player_name%", user.getName())
                 .replaceAll("%message%", message);
     }
