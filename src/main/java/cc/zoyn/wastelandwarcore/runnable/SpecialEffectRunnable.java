@@ -14,6 +14,7 @@ public class SpecialEffectRunnable extends BukkitRunnable {
         UserManager manager = UserManager.getInstance();
         CommonUtils.getOnlinePlayers().forEach(player -> {
             User user = manager.getUserByName(player.getName());
+            if (user == null) return;
             double resistance = user.getResistance();
             SpecialEffectPlayer effectPlayer = user.getEffects();
             if (effectPlayer != null) {

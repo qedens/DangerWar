@@ -2,16 +2,11 @@ package cc.zoyn.wastelandwarcore.api;
 
 import cc.zoyn.wastelandwarcore.Entry;
 import cc.zoyn.wastelandwarcore.manager.*;
-import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.util.ActionBarUtils;
 import cc.zoyn.wastelandwarcore.util.TitleUtils;
-import org.apache.commons.lang3.Validate;
-import org.bukkit.block.Beacon;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * 核心API
@@ -80,6 +75,15 @@ public class CoreAPI {
         return TownManager.getInstance();
     }
 
+    /**
+     * 获取联盟管理器的实例
+     *
+     * @return {@link AllianceManager}
+     */
+    public static AllianceManager getAllianceManager() {
+        return AllianceManager.getInstance();
+    }
+
     public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subTitle) {
         TitleUtils.sendTitle(player, fadeIn, stay, fadeOut, title, subTitle);
     }
@@ -88,70 +92,16 @@ public class CoreAPI {
         ActionBarUtils.sendBar(player, msg);
     }
 
-    /**
-     * 判断两个玩家是否为同一阵营
-     *
-     * @param playerAName 玩家A的名字
-     * @param playerBName 玩家B的名字
-     * @return {@link Boolean}
-     */
-    public static boolean isFriendly(String playerAName, String playerBName) {
-        Town townA = getTownManager().getTownByMember(playerAName);
-        Town townB = getTownManager().getTownByMember(playerBName);
-        return townA.getName().equals(townB.getName());
-    }
 
     /**
      * 判断两个玩家是否为同一阵营
      *
      * @param playerA 玩家A
      * @param playerB 玩家B
-     * @return {@link Boolean}
+     * @return 是则返回true
      */
     public static boolean isFriendly(@Nonnull Player playerA, @Nonnull Player playerB) {
-        return isFriendly(playerA.getName(), playerB.getName());
-    }
-
-    /**
-     * 获取城镇的 盟主 名字
-     *
-     * @param town 城镇对象
-     * @return 盟主的名字
-     */
-    public static String getTownOwnerName(Town town) {
-        return Validate.notNull(town.getOwner());
-    }
-
-    /**
-     * 获取城镇的 盟主 名字
-     *
-     * @param townName 城镇名
-     * @return 盟主的名字
-     */
-    public static String getTownOwnerName(String townName) {
-        return getTownOwnerName(getTownManager().getTownByName(townName));
-    }
-
-    /**
-     * 创建一个城镇对象
-     *
-     * @param name            城镇名
-     * @param level           城镇等级
-     * @param owner           城镇盟主
-     * @param members         城镇成员
-     * @param ally            城镇盟友
-     * @param residences      城镇所有的领地名
-     * @param leftUpBeacon    左上核心
-     * @param rightUpBeacon   右上核心
-     * @param leftDownBeacon  左下核心
-     * @param rightDownBeacon 右下核心
-     * @param centerEndBlock  中心基底
-     * @return {@link Town}
-     */
-    public static Town createTown(String name, int level, String owner, List<String> members, String ally, List<String> residences, Beacon leftUpBeacon, Beacon rightUpBeacon, Beacon leftDownBeacon, Beacon rightDownBeacon, Block centerEndBlock) {
-        Town town = new Town(name, level, owner, members, ally, residences, leftUpBeacon, rightUpBeacon, leftDownBeacon, rightDownBeacon, centerEndBlock);
-        getTownManager().addElement(town);
-        return town;
+        return CoreAPI.getAllianceManager().getAlliance(playerA).equals(CoreAPI.getAllianceManager().getAlliance(playerB));
     }
 
     public static boolean isDebugMode() {

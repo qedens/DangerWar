@@ -1,12 +1,16 @@
 package cc.zoyn.wastelandwarcore.command.town;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
-import cc.zoyn.wastelandwarcore.module.town.Town;
+import cc.zoyn.wastelandwarcore.model.Alliance;
+import cc.zoyn.wastelandwarcore.model.Town;
+import cc.zoyn.wastelandwarcore.model.TownCore;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
 import org.bukkit.Location;
 import org.bukkit.block.Beacon;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 /**
  * @author Zoyn
@@ -24,22 +28,32 @@ public class TownSetCommand implements SubCommand {
             sender.sendMessage("你必须是一名玩家!");
             return;
         }
-        Town town = CoreAPI.getTownManager().getTownByName(args[2]);
+        Optional<Town> townOptional = CoreAPI.getTownManager().getTown(args[2]);
+        if (!townOptional.isPresent()) {
+            sender.sendMessage("§4无法获取该城镇，请检查是否有误!");
+            return;
+        }
+        Town town = townOptional.get();
         Player player = (Player) sender;
         Location location = player.getLocation();
         switch (args[1].toLowerCase()) { // 转小写后进行判断
-            case "owner":
-                town.setOwner(args[3]);
+            case "alliance":
+                Optional<Alliance> alliance = CoreAPI.getAllianceManager().getAlliance(CoreAPI.getUserManager().getUserByName(args[3]));
+                if (!alliance.isPresent()) {
+                    sender.sendMessage("§4无法获取该联盟，请检查是否有误!");
+                    return;
+                }
+                town.setAlliance(alliance.get());
             case "center":
                 town.setCenterEndBlock(location.add(0D, -1D, 0).getBlock());
             case "leftup":
-                town.setLeftUpBeacon((Beacon) location.add(0D, -1D, 0).getBlock());
+                town.getTownCores()[0] = new TownCore((Beacon) location.add(0D, -1D, 0).getBlock());
             case "rightup":
-                town.setRightUpBeacon((Beacon) location.add(0D, -1D, 0).getBlock());
+                town.getTownCores()[1] = new TownCore((Beacon) location.add(0D, -1D, 0).getBlock());
             case "leftdown":
-                town.setLeftDownBeacon((Beacon) location.add(0D, -1D, 0).getBlock());
+                town.getTownCores()[2] = new TownCore((Beacon) location.add(0D, -1D, 0).getBlock());
             case "rightdown":
-                town.setRightDownBeacon((Beacon) location.add(0D, -1D, 0).getBlock());
+                town.getTownCores()[3] = new TownCore((Beacon) location.add(0D, -1D, 0).getBlock());
         }
         player.sendMessage("§a设置成功!");
     }

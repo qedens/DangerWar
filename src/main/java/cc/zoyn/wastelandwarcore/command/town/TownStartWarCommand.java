@@ -2,7 +2,6 @@ package cc.zoyn.wastelandwarcore.command.town;
 
 import cc.zoyn.wastelandwarcore.api.CoreAPI;
 import cc.zoyn.wastelandwarcore.api.event.WarStartEvent;
-import cc.zoyn.wastelandwarcore.module.town.Town;
 import cc.zoyn.wastelandwarcore.util.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -25,7 +24,7 @@ public class TownStartWarCommand implements SubCommand {
             return;
         }
         CoreAPI.setInWar(true);
-        CoreAPI.getTownManager().getList().forEach(Town::startWar);
+        //TODO CoreAPI.getTownManager().getList().forEach(Town::startWar);
         sender.sendMessage("§a设置成功!");
     }
 }

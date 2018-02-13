@@ -2,19 +2,29 @@ package cc.zoyn.wastelandwarcore.model;
 
 import cc.zoyn.wastelandwarcore.exception.InvalidTownCoreException;
 import cc.zoyn.wastelandwarcore.manager.TownManager;
-import cc.zoyn.wastelandwarcore.module.town.BeaconMode;
-import cc.zoyn.wastelandwarcore.module.town.Town;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 表示城镇核心
+ * @author lss233
  */
-public class TownCore {
+@Data
+public class TownCore implements ConfigurationSerializable {
     private Town town;
+    @Getter
+    @Setter
+    private Alliance owner;
     private final Block block;
     private final Block glass;
     private final Location location;
@@ -26,10 +36,11 @@ public class TownCore {
      * @throws InvalidTownCoreException 当认错城镇核心方块时抛出.
      */
     public TownCore(Block block) throws InvalidTownCoreException {
-        this.town = TownManager.getInstance().getTownByLocation(block.getLocation());
+        this.town = TownManager.getInstance().getTown(block.getLocation()).orElse(TownManager.DEFAULT_TOWN);
         this.block = block;
         this.location = block.getLocation();
         this.glass = block.getWorld().getBlockAt(location.getBlockX(), location.getBlockY() + 1, location.getBlockZ());
+        this.owner = town.getAlliance();
         validTownCore();
     }
     /**
@@ -37,10 +48,11 @@ public class TownCore {
      * @param block 信标方块
      */
     public TownCore(Beacon block) {
-        this.town = TownManager.getInstance().getTownByLocation(block.getLocation());
+        this.town = TownManager.getInstance().getTown(block.getLocation()).orElse(TownManager.DEFAULT_TOWN);
         this.block = block.getBlock();
         this.location = block.getLocation();
         this.glass = block.getWorld().getBlockAt(location.getBlockX(), location.getBlockY() + 1, location.getBlockZ());
+        this.owner = town.getAlliance();
     }
 
     /**
@@ -124,5 +136,48 @@ public class TownCore {
             default:
                 break;
         }
+    }
+
+    public static TownCore deserialize(Map<String, Object> map) throws InvalidTownCoreException {
+        return new TownCore(((Location) map.get("location")).getBlock());
+    }
+
+    public void update() {
+        for (int i = 0; i < town.getTownCores().length; i++) {
+            if (this.equals(town.getTownCores()[i]))
+                town.getTownCores()[i] = this;
+        }
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("town", getTown().getUniqueId().toString());
+        map.put("owner", getOwner().getUniqueId().toString());
+        map.put("location", getLocation());
+        map.put("mode", getMode().toString());
+        return map;
+    }
+
+
+    /**
+     * 信标模式
+     *
+     * @author lss233
+     */
+    public enum BeaconMode {
+
+        /**
+         * 普通模式
+         */
+        NORMAL,
+        /**
+         * 占据模式
+         */
+        OCCUPIED,
+        /**
+         * 资源模式
+         */
+        RESOURCE
     }
 }

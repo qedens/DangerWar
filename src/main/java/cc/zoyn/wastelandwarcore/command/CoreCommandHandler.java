@@ -27,6 +27,7 @@ public class CoreCommandHandler extends CommandHandler {
         registerSubCommand("take", new TakeItemCommand());
         registerSubCommand("upgrade", new UpgradeCommand());
         registerSubCommand("item", new ItemCommand());
+        registerSubCommand("create", new CreateCommand());
     }
 
 
