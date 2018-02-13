@@ -85,7 +85,7 @@ public class WarListener implements Listener {
      *
      * @param event 方块破坏事件
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (!CoreAPI.isInWar()) {
             return;
