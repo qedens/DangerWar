@@ -1,13 +1,15 @@
 package cc.zoyn.wastelandwarcore.module.common.specialeffect;
 
+import cc.zoyn.wastelandwarcore.Entry;
 import com.google.common.collect.Maps;
+import org.bukkit.Bukkit;
 
 import java.util.Map;
 
 /**
  * 存储玩家特殊属性的集合类
  *
- * @author DFKK
+ * @author DFKK, Zoyn
  */
 public class SpecialEffectPlayer {
     /**
@@ -17,6 +19,9 @@ public class SpecialEffectPlayer {
 
     public void addSpecialEffect(SpecialEffect effect) {
         effects.put(effect.getType(), new SpecialEffectPlayerValue(effect));
+
+        // 这里做延迟移除操作
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Entry.getInstance(), () -> removeSpecialEffect(effect.getType()), effect.getDuration() * 20L);
     }
 
     public boolean hasSpecialEffect(SpecialEffectType type) {
